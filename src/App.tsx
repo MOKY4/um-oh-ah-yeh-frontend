@@ -5,12 +5,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Main from "@pages/main";
 import Chat from "@pages/chat";
 import NotFound from "@pages/notfound";
+import HeaderLogo from "@assets/images/logo.png";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <PageHeader>header</PageHeader>
+        <PageHeader>
+          <Logo src={HeaderLogo} alt=""></Logo>
+        </PageHeader>
         <Routes>
           <Route path="/" element={<Main />}></Route>
           <Route path="/chat/*" element={<Chat />}></Route>
@@ -24,6 +27,13 @@ function App() {
 export default App;
 
 const PageHeader = styled.div`
-  background: blue;
+  background: white;
   height: 90rem;
+`;
+
+const Logo = styled.img`
+  position: absolute;
+  left: 120rem;
+  top: 26.37rem;
+  width: 150rem;
 `;
