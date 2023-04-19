@@ -14,6 +14,7 @@ function App() {
         <PageHeader>
           <Logo src={HeaderLogo} alt=""></Logo>
         </PageHeader>
+        <PageHeaderBack></PageHeaderBack>
         <Routes>
           <Route path="/" element={<Main />}></Route>
           <Route path="/chat/*" element={<Chat />}></Route>
@@ -27,6 +28,12 @@ function App() {
 export default App;
 
 const PageHeader = styled.div`
+  background: white;
+  height: 90rem;
+  position: fixed;
+  width: 100%;
+`;
+const PageHeaderBack = styled.div`
   background: white;
   height: 90rem;
 `;
