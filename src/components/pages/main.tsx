@@ -28,7 +28,7 @@ const Main = () => {
               느끼는 신입사원과 대학생을 위한 맞춤 레터를.
             </CenterSecondText>
           </TextColumn>
-          <HeightBox height="99rem" />
+          <WidthBox width="99rem" />
           <Imgbox src={MainLogo} alt=""></Imgbox>
         </CenterContents>
         <HeightBox height="98rem" />
