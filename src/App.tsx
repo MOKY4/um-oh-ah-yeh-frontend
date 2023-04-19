@@ -1,11 +1,10 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import styled from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Main from "./pages/main";
-import Chat from "./pages/chat";
-import NotFound from "./pages/notfound";
+import Main from "@pages/main";
+import Chat from "@pages/chat";
+import NotFound from "@pages/notfound";
 
 function App() {
   return (
