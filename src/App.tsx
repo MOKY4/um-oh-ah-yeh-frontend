@@ -24,5 +24,6 @@ function App() {
 export default App;
 
 const PageHeader = styled.div`
-  background: white;
+  background: blue;
+  height: 90rem;
 `;
