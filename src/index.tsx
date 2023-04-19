@@ -7,7 +7,7 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 	html{
-		font-size: ${(window.innerHeight / 1920) * 2}px;
+		font-size: ${window.innerWidth / 1920}px;
 	}
 `;
 
