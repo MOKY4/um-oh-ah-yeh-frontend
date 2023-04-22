@@ -16,14 +16,13 @@ interface Props {
 
 const ChoiceButton = (props: Props) => {
   const onClickHandler = () => {
-    if (props.depth === 1) {
-      props.setRole(props.choice_id);
-    }
-    if (props.depth === 2) {
-      props.setTo(props.choice_id);
-    }
-
     if (props.depth === props.curDepth) {
+      if (props.depth === 1) {
+        props.setRole(props.choice_id);
+      }
+      if (props.depth === 2) {
+        props.setTo(props.choice_id);
+      }
       props.setChoice(props.choice_id);
       props.nextDepth(props.depth + 1);
       props.updateList((oldArray) => [...oldArray, props.text]);

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ChoiceButton from "./choicebutton";
 import questions from "@assets/data/questions.json";
+import SystemThumb from "@assets/images/SystemThumb.png";
+import WidthBox from "./widthblock";
 
 interface DataType {
   [key: number]: {
@@ -32,11 +34,10 @@ const Message = (props: Props) => {
   return (
     <MessageWrapper
       isSystem={props.isSystem}
-      // opacity={0.25 * (4 - (props.curDepth - props.depth))}
       opacity={props.curDepth === props.depth ? 1 : 0.5}
     >
       <ProfileImageBox>
-        <Circle>{props.name}</Circle>
+        <SystemImg src={SystemThumb} alt="" />
       </ProfileImageBox>
       <QuestionText>{props.question}</QuestionText>
       <ButtonsWrapper>
@@ -94,10 +95,12 @@ const Message = (props: Props) => {
         ) : (
           <></>
         )}
+        <WidthBox width="30rem" />
       </ButtonsWrapper>
     </MessageWrapper>
   );
 };
+
 interface OpacityProps {
   opacity: number;
   isSystem: boolean;
@@ -123,11 +126,12 @@ const MessageWrapper = styled.div<OpacityProps>`
 `;
 
 const ProfileImageBox = styled.div`
-  width: 140rem;
+  width: 90rem;
   height: 92rem;
   display: flex;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
+  margin-right: 20rem;
 `;
 
 const QuestionText = styled.span`
@@ -142,22 +146,9 @@ const QuestionText = styled.span`
   color: #424242;
 `;
 
-const Circle = styled.div`
+const SystemImg = styled.img`
   width: 40rem;
   height: 40rem;
-  border-radius: 20rem;
-  background: #97c1ff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: "AppleSDGothicNeoB00";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20rem;
-  line-height: 28rem;
-  text-align: center;
-
-  color: #ffffff;
 `;
 
 const ButtonsWrapper = styled.div`
