@@ -5,14 +5,24 @@ interface Props {
   selected: number;
   setChoice: React.Dispatch<React.SetStateAction<number>>;
   text: string;
-  id: number;
+  choice_id: number;
+  depth: number;
+  curDepth: number;
+  nextDepth: React.Dispatch<React.SetStateAction<number>>;
+  updateList: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 const ChoiceButton = (props: Props) => {
   const onClickHandler = () => {
-    props.setChoice(props.id);
+    if (props.depth === props.curDepth) {
+      props.setChoice(props.choice_id);
+      props.nextDepth(props.depth + 1);
+      props.updateList((oldArray) => [...oldArray, props.choice_id]);
+    } else {
+      alert("한 번 고른 항목은 바꿀 수 없어요ㅠㅠ\n다시하기를 눌러주세요!");
+    }
   };
-  return props.id === props.selected ? (
+  return props.choice_id === props.selected ? (
     <Choiced>{props.text}</Choiced>
   ) : (
     <NotChoiced onClick={onClickHandler}>{props.text}</NotChoiced>
@@ -26,13 +36,13 @@ const NotChoiced = styled.button`
   align-items: center;
   justify-content: center;
 
-  //   padding: 5rem 20rem;
+  padding: 5rem 20rem;
 
-  width: 100rem;
+  // width: 100rem;
   height: 32rem;
 
   background: #f0f0f0;
-  border: 0px solid #3a79e3;
+  border: 1.3rem solid #f0f0f0;
   border-radius: 10rem;
 
   /* Inside auto layout */
@@ -59,13 +69,13 @@ const Choiced = styled.button`
   align-items: center;
   justify-content: center;
 
-  // padding: 5rem 20rem;
+  padding: 5rem 20rem;
 
-  width: 100rem;
-  height: 32rem;
+  // width: 100rem;
+  // height: 32rem;
 
   background: #cce1ff;
-  border: 1.3px solid #3a79e3;
+  border: 1.3rem solid #3a79e3;
   border-radius: 10rem;
 
   /* Inside auto layout */
