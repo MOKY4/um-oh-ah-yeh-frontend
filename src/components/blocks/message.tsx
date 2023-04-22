@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ChoiceButton from "./choicebutton";
 import questions from "@assets/data/questions.json";
 
-interface Data {
+interface DataType {
   [key: number]: {
-    [key: number]: string[];
+    "2": string[];
+    "3": { [key: number]: string[] };
   };
 }
 
@@ -16,15 +17,17 @@ interface Props {
   role: number;
   curDepth: number;
   isSystem: boolean;
+  choiceList: string[];
+  to: number;
+  setTo: React.Dispatch<React.SetStateAction<number>>;
+  setRole: React.Dispatch<React.SetStateAction<number>>;
   nextDepth: React.Dispatch<React.SetStateAction<number>>;
-  updateList: React.Dispatch<React.SetStateAction<number[]>>;
+  updateList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const Message = (props: Props) => {
   const [selected, setChoice] = useState(-1);
-  const question: Data = questions;
-  const choices: string[] = question[props.role][props.depth];
-  const roles: string[] = ["신입사원", "대학생", "일반"];
+  const question: DataType = questions;
   return (
     <MessageWrapper
       isSystem={props.isSystem}
@@ -36,31 +39,60 @@ const Message = (props: Props) => {
       </ProfileImageBox>
       <QuestionText>{props.question}</QuestionText>
       <ButtonsWrapper>
-        {props.depth === 1
-          ? roles.map((item, index) => (
-              <ChoiceButton
-                selected={selected}
-                setChoice={setChoice}
-                choice_id={index}
-                text={item}
-                depth={props.depth}
-                curDepth={props.curDepth}
-                nextDepth={props.nextDepth}
-                updateList={props.updateList}
-              ></ChoiceButton>
-            ))
-          : choices.map((item, index) => (
-              <ChoiceButton
-                selected={selected}
-                setChoice={setChoice}
-                choice_id={index}
-                text={item}
-                depth={props.depth}
-                curDepth={props.curDepth}
-                nextDepth={props.nextDepth}
-                updateList={props.updateList}
-              ></ChoiceButton>
-            ))}
+        {props.depth === 1 ? (
+          ["신입사원", "대학생", "일반"].map((item, index) => (
+            <ChoiceButton
+              selected={selected}
+              setChoice={setChoice}
+              choice_id={index}
+              text={item}
+              depth={props.depth}
+              curDepth={props.curDepth}
+              setTo={props.setTo}
+              setRole={props.setRole}
+              nextDepth={props.nextDepth}
+              updateList={props.updateList}
+            ></ChoiceButton>
+          ))
+        ) : (
+          <></>
+        )}
+        {props.depth === 2 ? (
+          question[props.role][2].map((item, index) => (
+            <ChoiceButton
+              selected={selected}
+              setChoice={setChoice}
+              choice_id={index}
+              text={item}
+              depth={props.depth}
+              curDepth={props.curDepth}
+              setTo={props.setTo}
+              setRole={props.setRole}
+              nextDepth={props.nextDepth}
+              updateList={props.updateList}
+            ></ChoiceButton>
+          ))
+        ) : (
+          <></>
+        )}
+        {props.depth === 3 ? (
+          question[props.role][3][props.to].map((item, index) => (
+            <ChoiceButton
+              selected={selected}
+              setChoice={setChoice}
+              choice_id={index}
+              text={item}
+              depth={props.depth}
+              curDepth={props.curDepth}
+              setTo={props.setTo}
+              setRole={props.setRole}
+              nextDepth={props.nextDepth}
+              updateList={props.updateList}
+            ></ChoiceButton>
+          ))
+        ) : (
+          <></>
+        )}
       </ButtonsWrapper>
     </MessageWrapper>
   );

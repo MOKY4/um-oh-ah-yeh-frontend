@@ -1,17 +1,27 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import MainLogo from "@assets/images/MainLogo.png";
 import HeightBox from "@blocks/heightblock";
 import WidthBox from "@blocks/widthblock";
+import { PageHeader, PageHeaderBack, Logo } from "@blocks/headers";
+import HeaderLogo from "@assets/images/logo.png";
 
 const Main = () => {
   const navigate = useNavigate();
   const ButtonHandler = () => {
     navigate("/chat");
   };
+  const LogoButtonHandler = () => {
+    navigate("/");
+  };
+
   return (
     <MainWrapper>
+      <PageHeader>
+        <Logo src={HeaderLogo} alt="" onClick={LogoButtonHandler}></Logo>
+      </PageHeader>
+      <PageHeaderBack></PageHeaderBack>
       <CenterWrapper>
         <HeightBox height="166rem" />
         <CenterContents>

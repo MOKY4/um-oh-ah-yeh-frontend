@@ -4,9 +4,18 @@ import HeightBox from "@blocks/heightblock";
 import WidthBox from "@blocks/widthblock";
 import Message from "@blocks/message";
 import LoadingImg from "@assets/images/Loading.png";
+import { PageHeader, PageHeaderBack, Logo } from "@blocks/headers";
+import HeaderLogo from "@assets/images/logo.png";
+import { useNavigate } from "react-router-dom";
+import UserChoiceButton from "@blocks/userchoicebutton";
+import SendLogo from "@assets/images/SendImg.png";
+import ReloadImage from "@assets/images/reload.png";
+
 const Chat = () => {
   const [curDepth, nextDepth] = useState(1);
-  const [choiceList, updateList] = useState<number[]>([]);
+  const [choiceList, updateList] = useState<string[]>([]);
+  const [role, setRole] = useState(0);
+  const [to, setTo] = useState(-1);
   useEffect(() => {
     var question_div = document.getElementById("questions");
     if (question_div) {
@@ -16,10 +25,17 @@ const Chat = () => {
         behavior: "smooth",
       });
     }
-    console.log(choiceList);
   }, [curDepth, choiceList]);
+  const navigate = useNavigate();
+  const LogoButtonHandler = () => {
+    navigate("/");
+  };
   return (
     <>
+      <PageHeader>
+        <Logo src={HeaderLogo} alt="" onClick={LogoButtonHandler}></Logo>
+      </PageHeader>
+      <PageHeaderBack></PageHeaderBack>
       <HeaderLine />
       <MainWrapper>
         {/* <RecordWrapper></RecordWrapper> */}
@@ -31,9 +47,13 @@ const Chat = () => {
                 name="음"
                 question="당신은 누구인가요?"
                 depth={1}
-                role={0}
+                role={role}
                 curDepth={curDepth}
                 isSystem={true}
+                choiceList={choiceList}
+                to={to}
+                setTo={setTo}
+                setRole={setRole}
                 nextDepth={nextDepth}
                 updateList={updateList}
               />
@@ -45,23 +65,31 @@ const Chat = () => {
                 name="음"
                 question="누구에게 레터를 작성하나요?"
                 depth={2}
-                role={0}
+                role={role}
                 curDepth={curDepth}
                 isSystem={true}
+                choiceList={choiceList}
+                to={to}
+                setTo={setTo}
+                setRole={setRole}
                 nextDepth={nextDepth}
                 updateList={updateList}
               />
             ) : (
               <></>
             )}
-            {curDepth >= 3 ? (
+            {curDepth >= 3 && to !== -1 ? (
               <Message
                 name="음"
                 question="어떤 상황의 글을 작성하나요?"
                 depth={3}
-                role={0}
+                role={role}
                 curDepth={curDepth}
                 isSystem={true}
+                choiceList={choiceList}
+                to={to}
+                setTo={setTo}
+                setRole={setRole}
                 nextDepth={nextDepth}
                 updateList={updateList}
               />
@@ -93,8 +121,30 @@ const Chat = () => {
             )} */}
           </ResponseWrapper>
           {/* <HeightBox height="263rem" /> */}
-          <InputWrapper></InputWrapper>
+          <InputWrapper>
+            <ChoicesWrapper>
+              {choiceList ? (
+                choiceList.map((item) => <UserChoiceButton text={item} />)
+              ) : (
+                <></>
+              )}
+            </ChoicesWrapper>
+            <HeightBox height="20rem" />
+            <InputSendWrapper>
+              <InputBox></InputBox>
+              <WidthBox width="35rem" />
+              <SendWrapper curDepth={curDepth}>
+                <SendText>보내기</SendText>
+                <WidthBox width="10rem" />
+                <SendImg src={SendLogo} alt=""></SendImg>
+              </SendWrapper>
+            </InputSendWrapper>
+          </InputWrapper>
         </ChatWrapper>
+        <ReloadButton>
+          <ReloadImg src={ReloadImage} alt=""></ReloadImg>
+          <ReloadText>다시하기</ReloadText>
+        </ReloadButton>
       </MainWrapper>
     </>
   );
@@ -103,7 +153,7 @@ const Chat = () => {
 export default Chat;
 
 const HeaderLine = styled.div`
-  height: 1rem;
+  height: 0.5rem;
   background: #838383;
 `;
 
@@ -115,7 +165,7 @@ const MainWrapper = styled.div`
 
 const ChatWrapper = styled.div`
   width: 1270rem;
-  height: ${window.innerHeight - (90 / 1920) * window.innerWidth - 1}px;
+  height: ${window.innerHeight - (80 / 1920) * window.innerWidth - 1}px;
   display: flex;
   flex-direction: column;
   align-item: center;
@@ -123,7 +173,7 @@ const ChatWrapper = styled.div`
 `;
 
 const ResponseWrapper = styled.div`
-  height: 635rem;
+  height: 835rem;
   width: 1270rem;
   display: flex;
   flex-direction: column;
@@ -143,7 +193,8 @@ const InputWrapper = styled.div`
   border: 1px solid #838383;
   border-radius: 20rem;
   margin: 0 auto;
-  margin-bottom: 56rem;
+  margin-bottom: 90rem;
+  // display: flex;
 `;
 
 const Loading = styled.img`
@@ -155,4 +206,114 @@ const LoadingWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const ChoicesWrapper = styled.div`
+  display: flex;
+  height: 33rem;
+  margin-top: 26.19rem;
+  margin-left: 30rem;
+`;
+
+const InputSendWrapper = styled.div`
+  display: flex;
+  margin-left: 30rem;
+  align-items: center;
+`;
+
+const InputBox = styled.input`
+  width: 970rem;
+  height: 76rem;
+  padding-left: 30rem;
+  /* GRAY 01 */
+
+  background: #f0f0f0;
+  /* GRAY 02 */
+
+  border: 1.2rem solid #838383;
+  border-radius: 15rem;
+  &:focus {
+    outline: none;
+  }
+
+  font-family: "AppleSDGothicNeoM00";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17rem;
+  line-height: 22rem;
+
+  /* GRAY 03 */
+
+  color: #424242;
+`;
+
+interface SendType {
+  curDepth: number;
+}
+
+const SendWrapper = styled.div<SendType>`
+  width: 155rem;
+  height: 50rem;
+
+  /* GRAY 01 */
+  ${(props) =>
+    props.curDepth > 3 ? "background: #FF983B;" : "background: #F0F0F0;"}
+
+  border-radius: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const SendText = styled.span`
+  font-family: "AppleSDGothicNeoB00";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16rem;
+  line-height: 23rem;
+  /* identical to box height, or 144% */
+
+  text-align: center;
+
+  /* GRAY 00 */
+
+  color: #ffffff;
+`;
+const SendImg = styled.img`
+  /* Icon shape */
+
+  width: 13rem;
+  height: 13rem;
+
+  /* GRAY 00 */
+`;
+
+const ReloadButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 10rem;
+  gap: 5rem;
+
+  position: absolute;
+  width: 112rem;
+  height: 36rem;
+  left: 1479rem;
+  top: 733rem;
+`;
+
+const ReloadImg = styled.img`
+  width: 24rem;
+  height: 24rem;
+`;
+
+const ReloadText = styled.span`
+  font-family: "AppleSDGothicNeoB00";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17rem;
+  line-height: 23rem;
+  /* identical to box height, or 135% */
+
+  color: #838383;
 `;
