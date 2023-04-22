@@ -30,6 +30,10 @@ const Chat = () => {
   const LogoButtonHandler = () => {
     navigate("/");
   };
+
+  const ReloadHandler = () => {
+    window.location.reload();
+  };
   return (
     <>
       <PageHeader>
@@ -121,30 +125,37 @@ const Chat = () => {
             )} */}
           </ResponseWrapper>
           {/* <HeightBox height="263rem" /> */}
-          <InputWrapper>
-            <ChoicesWrapper>
-              {choiceList ? (
-                choiceList.map((item) => <UserChoiceButton text={item} />)
-              ) : (
-                <></>
-              )}
-            </ChoicesWrapper>
-            <HeightBox height="20rem" />
-            <InputSendWrapper>
-              <InputBox></InputBox>
-              <WidthBox width="35rem" />
-              <SendWrapper curDepth={curDepth}>
-                <SendText>보내기</SendText>
-                <WidthBox width="10rem" />
-                <SendImg src={SendLogo} alt=""></SendImg>
-              </SendWrapper>
-            </InputSendWrapper>
-          </InputWrapper>
+          <InputReloadWrapper>
+            <ReloadButton onClick={ReloadHandler}>
+              <ReloadImg src={ReloadImage} alt=""></ReloadImg>
+              <ReloadText>다시하기</ReloadText>
+            </ReloadButton>
+            <InputWrapper>
+              <ChoicesWrapper>
+                {choiceList ? (
+                  choiceList.map((item) => <UserChoiceButton text={item} />)
+                ) : (
+                  <></>
+                )}
+              </ChoicesWrapper>
+              <HeightBox height="20rem" />
+              <InputSendWrapper>
+                {curDepth > 3 ? (
+                  <InputBox></InputBox>
+                ) : (
+                  <InputBox placeholder="3번의 질문에 응답한 후 더 구체적인 상황을 쓸 수 있어요"></InputBox>
+                )}
+
+                <WidthBox width="35rem" />
+                <SendWrapper curDepth={curDepth}>
+                  <SendText>보내기</SendText>
+                  <WidthBox width="10rem" />
+                  <SendImg src={SendLogo} alt=""></SendImg>
+                </SendWrapper>
+              </InputSendWrapper>
+            </InputWrapper>
+          </InputReloadWrapper>
         </ChatWrapper>
-        <ReloadButton>
-          <ReloadImg src={ReloadImage} alt=""></ReloadImg>
-          <ReloadText>다시하기</ReloadText>
-        </ReloadButton>
       </MainWrapper>
     </>
   );
@@ -168,8 +179,8 @@ const ChatWrapper = styled.div`
   height: ${window.innerHeight - (80 / 1920) * window.innerWidth - 1}px;
   display: flex;
   flex-direction: column;
-  align-item: center;
-  // justify-content: space-between;
+  // align-item: center;
+  justify-content: space-between;
 `;
 
 const ResponseWrapper = styled.div`
@@ -257,7 +268,9 @@ const SendWrapper = styled.div<SendType>`
 
   /* GRAY 01 */
   ${(props) =>
-    props.curDepth > 3 ? "background: #FF983B;" : "background: #F0F0F0;"}
+    props.curDepth > 3
+      ? "background: #FF983B;cursor: pointer;"
+      : "background: #F0F0F0;"}
 
   border-radius: 10rem;
   display: flex;
@@ -295,11 +308,13 @@ const ReloadButton = styled.div`
   padding: 5rem 10rem;
   gap: 5rem;
 
-  position: absolute;
+  // position: absolute;
   width: 112rem;
   height: 36rem;
-  left: 1479rem;
-  top: 733rem;
+  // left: 1479rem;
+  // top: 733rem;
+  cursor: pointer;
+  margin-bottom: 10rem;
 `;
 
 const ReloadImg = styled.img`
@@ -316,4 +331,10 @@ const ReloadText = styled.span`
   /* identical to box height, or 135% */
 
   color: #838383;
+`;
+
+const InputReloadWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 `;
