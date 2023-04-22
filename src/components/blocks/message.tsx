@@ -28,6 +28,7 @@ interface Props {
 const Message = (props: Props) => {
   const [selected, setChoice] = useState(-1);
   const question: DataType = questions;
+
   return (
     <MessageWrapper
       isSystem={props.isSystem}
