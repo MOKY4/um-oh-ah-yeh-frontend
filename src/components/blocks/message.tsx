@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ChoiceButton from "./choicebutton";
 import questions from "@assets/data/questions.json";
+import SystemThumb from "@assets/images/SystemThumb.png";
+import WidthBox from "./widthblock";
 
-interface Data {
+interface DataType {
   [key: number]: {
-    [key: number]: string[];
+    "2": string[];
+    "3": { [key: number]: string[] };
   };
 }
 
@@ -16,55 +19,88 @@ interface Props {
   role: number;
   curDepth: number;
   isSystem: boolean;
+  choiceList: string[];
+  to: number;
+  setTo: React.Dispatch<React.SetStateAction<number>>;
+  setRole: React.Dispatch<React.SetStateAction<number>>;
   nextDepth: React.Dispatch<React.SetStateAction<number>>;
-  updateList: React.Dispatch<React.SetStateAction<number[]>>;
+  updateList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const Message = (props: Props) => {
   const [selected, setChoice] = useState(-1);
-  const question: Data = questions;
-  const choices: string[] = question[props.role][props.depth];
-  const roles: string[] = ["신입사원", "대학생", "일반"];
+  const question: DataType = questions;
+
   return (
     <MessageWrapper
       isSystem={props.isSystem}
-      // opacity={0.25 * (4 - (props.curDepth - props.depth))}
       opacity={props.curDepth === props.depth ? 1 : 0.5}
     >
       <ProfileImageBox>
-        <Circle>{props.name}</Circle>
+        <SystemImg src={SystemThumb} alt="" />
       </ProfileImageBox>
       <QuestionText>{props.question}</QuestionText>
       <ButtonsWrapper>
-        {props.depth === 1
-          ? roles.map((item, index) => (
-              <ChoiceButton
-                selected={selected}
-                setChoice={setChoice}
-                choice_id={index}
-                text={item}
-                depth={props.depth}
-                curDepth={props.curDepth}
-                nextDepth={props.nextDepth}
-                updateList={props.updateList}
-              ></ChoiceButton>
-            ))
-          : choices.map((item, index) => (
-              <ChoiceButton
-                selected={selected}
-                setChoice={setChoice}
-                choice_id={index}
-                text={item}
-                depth={props.depth}
-                curDepth={props.curDepth}
-                nextDepth={props.nextDepth}
-                updateList={props.updateList}
-              ></ChoiceButton>
-            ))}
+        {props.depth === 1 ? (
+          ["신입사원", "대학생", "일반"].map((item, index) => (
+            <ChoiceButton
+              selected={selected}
+              setChoice={setChoice}
+              choice_id={index}
+              text={item}
+              depth={props.depth}
+              curDepth={props.curDepth}
+              setTo={props.setTo}
+              setRole={props.setRole}
+              nextDepth={props.nextDepth}
+              updateList={props.updateList}
+            ></ChoiceButton>
+          ))
+        ) : (
+          <></>
+        )}
+        {props.depth === 2 ? (
+          question[props.role][2].map((item, index) => (
+            <ChoiceButton
+              selected={selected}
+              setChoice={setChoice}
+              choice_id={index}
+              text={item}
+              depth={props.depth}
+              curDepth={props.curDepth}
+              setTo={props.setTo}
+              setRole={props.setRole}
+              nextDepth={props.nextDepth}
+              updateList={props.updateList}
+            ></ChoiceButton>
+          ))
+        ) : (
+          <></>
+        )}
+        {props.depth === 3 ? (
+          question[props.role][3][props.to].map((item, index) => (
+            <ChoiceButton
+              selected={selected}
+              setChoice={setChoice}
+              choice_id={index}
+              text={item}
+              depth={props.depth}
+              curDepth={props.curDepth}
+              setTo={props.setTo}
+              setRole={props.setRole}
+              nextDepth={props.nextDepth}
+              updateList={props.updateList}
+            ></ChoiceButton>
+          ))
+        ) : (
+          <></>
+        )}
+        <WidthBox width="30rem" />
       </ButtonsWrapper>
     </MessageWrapper>
   );
 };
+
 interface OpacityProps {
   opacity: number;
   isSystem: boolean;
@@ -90,11 +126,12 @@ const MessageWrapper = styled.div<OpacityProps>`
 `;
 
 const ProfileImageBox = styled.div`
-  width: 140rem;
+  width: 90rem;
   height: 92rem;
   display: flex;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
+  margin-right: 20rem;
 `;
 
 const QuestionText = styled.span`
@@ -109,22 +146,9 @@ const QuestionText = styled.span`
   color: #424242;
 `;
 
-const Circle = styled.div`
+const SystemImg = styled.img`
   width: 40rem;
   height: 40rem;
-  border-radius: 20rem;
-  background: #97c1ff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: "AppleSDGothicNeoB00";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20rem;
-  line-height: 28rem;
-  text-align: center;
-
-  color: #ffffff;
 `;
 
 const ButtonsWrapper = styled.div`

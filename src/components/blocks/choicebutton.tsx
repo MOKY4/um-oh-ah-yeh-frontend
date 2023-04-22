@@ -8,16 +8,24 @@ interface Props {
   choice_id: number;
   depth: number;
   curDepth: number;
+  setTo: React.Dispatch<React.SetStateAction<number>>;
+  setRole: React.Dispatch<React.SetStateAction<number>>;
   nextDepth: React.Dispatch<React.SetStateAction<number>>;
-  updateList: React.Dispatch<React.SetStateAction<number[]>>;
+  updateList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const ChoiceButton = (props: Props) => {
   const onClickHandler = () => {
     if (props.depth === props.curDepth) {
+      if (props.depth === 1) {
+        props.setRole(props.choice_id);
+      }
+      if (props.depth === 2) {
+        props.setTo(props.choice_id);
+      }
       props.setChoice(props.choice_id);
       props.nextDepth(props.depth + 1);
-      props.updateList((oldArray) => [...oldArray, props.choice_id]);
+      props.updateList((oldArray) => [...oldArray, props.text]);
     } else {
       alert("한 번 고른 항목은 바꿀 수 없어요ㅠㅠ\n다시하기를 눌러주세요!");
     }
