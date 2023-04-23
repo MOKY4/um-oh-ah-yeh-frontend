@@ -27,7 +27,7 @@ const MainWrapper = styled.div`
 
   border: 1.2rem solid #ff983b;
   border-radius: 15rem;
-  margin-bottom: 60rem;
+  margin-top: 50rem;
 `;
 
 const ResponseWrapper = styled.div`
