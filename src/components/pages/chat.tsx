@@ -24,6 +24,7 @@ import * as AM from "@components/blocks/alertmodal";
 import * as CM from "@components/blocks/copymodal";
 import copyImage from "@assets/images/copyimage.png";
 import gptloading from "@assets/images/gptloading.gif";
+import gptloadingalt from "@assets/images/gptloadingalt.png";
 import gpterror from "@assets/images/gpterror.png";
 
 const Chat = () => {
@@ -192,7 +193,7 @@ const Chat = () => {
         <HeaderLine />
         <HeightBox height="220rem" />
         <GPTLoadingWrapper>
-          <GPTLoading src={gptloading} alt="" />
+          <GPTLoading src={gptloading} alt={gptloadingalt} />
           <GPTLoadingText>로딩 중이에요... 잠시만 기다려주세요!</GPTLoadingText>
         </GPTLoadingWrapper>
       </>
