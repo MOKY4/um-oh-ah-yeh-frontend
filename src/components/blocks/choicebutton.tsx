@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { useRecoilState } from "recoil";
+import { alertModal } from "atoms/alertmodalstate";
 
 interface Props {
   selected: number;
@@ -15,6 +17,7 @@ interface Props {
 }
 
 const ChoiceButton = (props: Props) => {
+  const [, setAlertModal] = useRecoilState(alertModal);
   const onClickHandler = () => {
     if (props.depth === props.curDepth) {
       if (props.depth === 1) {
@@ -27,7 +30,7 @@ const ChoiceButton = (props: Props) => {
       props.nextDepth(props.depth + 1);
       props.updateList((oldArray) => [...oldArray, props.text]);
     } else {
-      alert("한 번 고른 항목은 바꿀 수 없어요ㅠㅠ\n다시하기를 눌러주세요!");
+      setAlertModal(true);
     }
   };
   return props.choice_id === props.selected ? (

@@ -13,6 +13,9 @@ import ReloadImage from "@assets/images/reload.png";
 import ResponseMessage from "@blocks/response";
 import UserRequest from "@blocks/userrequest";
 import PostResponse from "@assets/images/postresponse.png";
+import { useRecoilState } from "recoil";
+import { alertModal } from "atoms/alertmodalstate";
+import AlertImg from "@assets/images/alertimage.png";
 
 const Chat = () => {
   const [curDepth, nextDepth] = useState(1);
@@ -21,6 +24,8 @@ const Chat = () => {
   const [to, setTo] = useState(-1);
   const [responses, setResponse] = useState<string[]>([]);
   const [curInput, setInput] = useState("");
+  const [isAlertModelOn, setAlertModal] = useRecoilState(alertModal);
+
   useEffect(() => {
     var question_div = document.getElementById("questions");
     if (question_div) {
@@ -57,6 +62,9 @@ const Chat = () => {
     if (e.key === "Enter") {
       SendHandler();
     }
+  };
+  const alertModalHander = () => {
+    setAlertModal(false);
   };
   return (
     <>
@@ -179,6 +187,21 @@ const Chat = () => {
           </InputReloadWrapper>
         </ChatWrapper>
       </MainWrapper>
+      {isAlertModelOn ? (
+        <ModalBackground>
+          <ModalWrapper>
+            <ModalAlertImg src={AlertImg} alt="" />
+            <ModalAlertText>
+              한 번 고른 항목은 바꿀 수 없어요
+              <br />
+              <BlueText>다시하기</BlueText>를 눌러주세요!
+            </ModalAlertText>
+            <ModalCloseButton onClick={alertModalHander}>확인</ModalCloseButton>
+          </ModalWrapper>
+        </ModalBackground>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
@@ -367,4 +390,86 @@ const PostResponseImg = styled.img`
   margin: 0 auto;
   margin-top: 10rem;
   margin-bottom: 44rem;
+`;
+
+const ModalBackground = styled.div`
+  width: 100vh;
+  height: 100vh;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.3);
+  left: 0rem;
+  top: 0rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+  align-items: center;
+  width: 600rem;
+  height: 350rem;
+  background: #ffffff;
+  box-shadow: 5rem 5rem 30rem rgba(0, 0, 0, 0.3);
+  border-radius: 15rem;
+`;
+
+const ModalAlertImg = styled.img`
+  width: 133.59rem;
+  height: 110rem;
+  margin-top: 44.5rem;
+  margin-bottom: 30rem;
+`;
+
+const ModalAlertText = styled.span`
+  width: 206rem;
+  height: 46rem;
+  font-family: "AppleSDGothicNeoB00";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16rem;
+  line-height: 23rem;
+  /* or 144% */
+
+  text-align: center;
+
+  /* GRAY 03 */
+
+  color: #424242;
+  margin-bottom: 30rem;
+`;
+
+const BlueText = styled.span`
+  color: #3a79e3;
+`;
+
+const ModalCloseButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  width: 155rem;
+  height: 45rem;
+
+  /* SUB COLOR 02 */
+
+  background: #3a79e3;
+  border-radius: 10rem;
+
+  font-family: "AppleSDGothicNeoB00";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16rem;
+  line-height: 23rem;
+  /* identical to box height, or 144% */
+
+  text-align: center;
+
+  /* GRAY 00 */
+
+  color: #ffffff;
+  cursor: pointer;
 `;
