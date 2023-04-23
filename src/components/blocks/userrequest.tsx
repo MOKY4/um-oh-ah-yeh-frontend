@@ -41,7 +41,7 @@ const ResponseText = styled.span`
     width: 1127rem;
     margin-left: 20rem;
     margin-right: 20rem:
-    font-family: 'AppleSDGothicNeoM00';
+    font-family: "AppleSDGothicNeoM00";
     font-style: normal;
     font-weight: 400;
     font-size: 17rem;
