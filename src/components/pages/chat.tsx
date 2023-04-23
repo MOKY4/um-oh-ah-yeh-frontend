@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import HeightBox from "@blocks/heightblock";
 import WidthBox from "@blocks/widthblock";
@@ -29,11 +29,81 @@ const Chat = () => {
   const [choiceList, updateList] = useState<string[]>([]);
   const [role, setRole] = useState(0);
   const [to, setTo] = useState(-1);
-  const [responses, setResponse] = useState<string[]>(["답변이에용"]);
+  const [responses, setResponse] = useState<string[]>([]);
   const [curInput, setInput] = useState("");
   const [isAlertModalOn, setAlertModal] = useRecoilState(alertModal);
   const [isCopyModalOn, setCopyModal] = useRecoilState(copyModalState);
   const [isCopyFirst, setCopyFirst] = useRecoilState(copyModalisFirst);
+  const [socketConnected, setSocketConnected] = useState(false);
+  const [sendMsg, setSendMsg] = useState(false);
+  const [countError, setError] = useState(false);
+
+  const webSocketUrl = process.env.REACT_APP_API_ENDPOINT;
+  let ws = useRef<WebSocket | null>(null);
+
+  useEffect(() => {
+    if (!ws.current) {
+      ws.current = new WebSocket(webSocketUrl);
+      ws.current.onopen = () => {
+        // console.log("connected");
+        setSocketConnected(true);
+      };
+      ws.current.onclose = () => {
+        // console.log("connection closed");
+      };
+    }
+
+    // return () => {
+    //   ws.current?.close();
+    // };
+  }, []);
+
+  useEffect(() => {
+    if (socketConnected) {
+      if (ws.current) {
+        ws.current.send(
+          JSON.stringify({
+            action: "sendmessage",
+            message: "글 좀 써줘",
+          })
+        );
+      }
+      setSendMsg(true);
+    }
+  }, [socketConnected]);
+
+  useEffect(() => {
+    if (sendMsg) {
+      if (ws.current) {
+        ws.current.onmessage = (e: MessageEvent) => {
+          const data = e.data;
+          if (data[0] === "{" && data[data.length - 1] === "}") {
+            // console.log("에러났다!");
+            if (data.includes("Internal server error")) {
+              setError(true);
+            }
+          } else {
+            setResponse((oldArray) => [...oldArray, e.data]);
+            // console.log(data);
+          }
+        };
+      }
+    }
+  }, [sendMsg]);
+
+  useEffect(() => {
+    if (curDepth === 4) {
+      if (ws.current) {
+        ws.current.send(
+          JSON.stringify({
+            action: "sendmessage",
+            message: `나는 ${choiceList[0]}이고, ${choiceList[1]}에게, ${choiceList[2]}을 할거야`,
+          })
+        );
+        // console.log("First Request send");
+      }
+    }
+  }, [curDepth, choiceList]);
 
   useEffect(() => {
     var question_div = document.getElementById("questions");
@@ -51,6 +121,7 @@ const Chat = () => {
   };
 
   const ReloadHandler = () => {
+    ws.current?.close();
     window.location.reload();
   };
 
@@ -58,6 +129,15 @@ const Chat = () => {
     if (curDepth > 3 && curInput.length !== 0) {
       setResponse((oldArray) => [...oldArray, curInput]);
       setInput("");
+      if (ws.current) {
+        ws.current.send(
+          JSON.stringify({
+            action: "sendmessage",
+            message: curInput,
+          })
+        );
+        // console.log("message send");
+      }
     }
   };
 
@@ -79,6 +159,32 @@ const Chat = () => {
     setCopyModal(false);
     setCopyFirst(false);
   };
+
+  if (countError) {
+    return (
+      <>
+        <PageHeader>
+          <Logo src={HeaderLogo} alt="" onClick={LogoButtonHandler}></Logo>
+        </PageHeader>
+        <PageHeaderBack></PageHeaderBack>
+        <HeaderLine />
+        <div>조금 이따가 시도하슈</div>
+      </>
+    );
+  }
+  if (responses.length === 0) {
+    return (
+      <>
+        <PageHeader>
+          <Logo src={HeaderLogo} alt="" onClick={LogoButtonHandler}></Logo>
+        </PageHeader>
+        <PageHeaderBack></PageHeaderBack>
+        <HeaderLine />
+        <div>로딩중</div>
+      </>
+    );
+  }
+
   return (
     <>
       <PageHeader>
@@ -128,27 +234,29 @@ const Chat = () => {
               <></>
             )}
             {curDepth >= 3 && to !== -1 ? (
-              <Message
-                name="음"
-                question="어떤 상황의 글을 작성하나요?"
-                depth={3}
-                role={role}
-                curDepth={curDepth}
-                isSystem={true}
-                choiceList={choiceList}
-                to={to}
-                setTo={setTo}
-                setRole={setRole}
-                nextDepth={nextDepth}
-                updateList={updateList}
-              />
+              <>
+                <Message
+                  name="음"
+                  question="어떤 상황의 글을 작성하나요?"
+                  depth={3}
+                  role={role}
+                  curDepth={curDepth}
+                  isSystem={true}
+                  choiceList={choiceList}
+                  to={to}
+                  setTo={setTo}
+                  setRole={setRole}
+                  nextDepth={nextDepth}
+                  updateList={updateList}
+                />
+              </>
             ) : (
               <></>
             )}
             {curDepth >= 4 ? (
               <>
-                <HeightBox height="210rem" />
-                {responses.length === 0 ? (
+                {/* <HeightBox height="210rem" /> */}
+                {/* {responses.length === 1 ? (
                   <LoadingWrapper>
                     <HeightBox height="210rem" />
                     <Loading src={LoadingImg} alt="" />
@@ -156,22 +264,40 @@ const Chat = () => {
                   </LoadingWrapper>
                 ) : (
                   <></>
-                )}
+                )} */}
 
                 {responses ? (
                   responses.map((item, index) =>
-                    index % 2 === 0 ? (
-                      <>
+                    index % 2 === 1 ? (
+                      <div key={item}>
                         <ResponseMessage text={item} responseID={index} />
                         {responses.length === 1 ? (
                           <PostResponseImg src={PostResponse} alt="" />
                         ) : (
                           <></>
                         )}
-                      </>
+                      </div>
+                    ) : index === 0 ? (
+                      <></>
                     ) : (
                       <UserRequest text={item} />
                     )
+                  )
+                ) : (
+                  <></>
+                )}
+
+                {responses ? (
+                  responses.length % 2 === 1 ? (
+                    <>
+                      <LoadingWrapper>
+                        <HeightBox height="50rem" />
+                        <Loading src={LoadingImg} alt="" />
+                        <HeightBox height="50rem" />
+                      </LoadingWrapper>
+                    </>
+                  ) : (
+                    <></>
                   )
                 ) : (
                   <></>
@@ -189,7 +315,9 @@ const Chat = () => {
             <InputWrapper>
               <ChoicesWrapper>
                 {choiceList ? (
-                  choiceList.map((item) => <UserChoiceButton text={item} />)
+                  choiceList.map((item) => (
+                    <UserChoiceButton key={item} text={item} />
+                  ))
                 ) : (
                   <></>
                 )}
@@ -199,7 +327,7 @@ const Chat = () => {
                 {curDepth > 3 ? (
                   <InputBox
                     onChange={changeHandler}
-                    value={curInput}
+                    value={curInput || ""}
                     onKeyPress={enterHandler}
                   ></InputBox>
                 ) : (
@@ -207,7 +335,11 @@ const Chat = () => {
                 )}
 
                 <WidthBox width="35rem" />
-                <SendWrapper curDepth={curDepth} onClick={SendHandler}>
+                <SendWrapper
+                  rescount={responses.length}
+                  curDepth={curDepth}
+                  onClick={SendHandler}
+                >
                   <SendText>보내기</SendText>
                   <WidthBox width="10rem" />
                   <SendImg src={SendLogo} alt=""></SendImg>
@@ -279,7 +411,7 @@ const ChatWrapper = styled.div`
 `;
 
 const ResponseWrapper = styled.div`
-  height: 835rem;
+  height: ${window.innerHeight - (375 / 1920) * window.innerWidth}px;
   width: 1270rem;
   display: flex;
   flex-direction: column;
@@ -355,6 +487,7 @@ const InputBox = styled.input`
 
 interface SendType {
   curDepth: number;
+  rescount: number;
 }
 
 const SendWrapper = styled.div<SendType>`
@@ -364,7 +497,9 @@ const SendWrapper = styled.div<SendType>`
   /* GRAY 01 */
   ${(props) =>
     props.curDepth > 3
-      ? "background: #FF983B;cursor: pointer;"
+      ? props.rescount % 2 === 0
+        ? "background: #FF983B;cursor: pointer;"
+        : "background: #F0F0F0;"
       : "background: #F0F0F0;"}
 
   border-radius: 10rem;
