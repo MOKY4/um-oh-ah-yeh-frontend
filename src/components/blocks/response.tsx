@@ -4,6 +4,7 @@ import Systemthumb from "@assets/images/SystemThumb.png";
 import CopyImage from "@assets/images/copy.png";
 import { useRecoilState } from "recoil";
 import { copyModalState } from "atoms/modalstates";
+import HeightBox from "./heightblock";
 
 interface ResponseProps {
   text: string;
@@ -61,14 +62,15 @@ const MainWrapper = styled.div`
 
 const ResponseWrapper = styled.div`
   display: flex;
-  width: 1091rem;
+  width: 1170rem;
   align-items: center;
   // min-height: 200rem;
 `;
 
 const ProfileWrapper = styled.div`
   display: flex;
-  align-items: center;
+  // align-items: center;
+  margin-top: 35rem;
 `;
 const ProfileThumb = styled.img`
   width: 40rem;
@@ -89,14 +91,14 @@ const ResponseText = styled.span`
   color: #424242;
   text-align: left;
   word-break: keep-all;
-  margin-top: 35rem;
+  // margin-top: 35rem;
   margin-bottom: 30rem;
   white-space: pre-line;
 `;
 
 const CopyWrapper = styled.div`
   height: 50rem;
-  width: 1151rem;
+  width: 1200rem;
   margin-bottom: 25rem;
   margin-right: 50rem;
   display: flex;
