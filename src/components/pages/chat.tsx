@@ -10,12 +10,31 @@ import { useNavigate } from "react-router-dom";
 import UserChoiceButton from "@blocks/userchoicebutton";
 import SendLogo from "@assets/images/SendImg.png";
 import ReloadImage from "@assets/images/reload.png";
+import ResponseMessage from "@blocks/response";
+import UserRequest from "@blocks/userrequest";
+import PostResponse from "@assets/images/postresponse.png";
+import { useRecoilState } from "recoil";
+import {
+  alertModal,
+  copyModalState,
+  copyModalisFirst,
+} from "atoms/modalstates";
+import AlertImg from "@assets/images/alertimage.png";
+import * as AM from "@components/blocks/alertmodal";
+import * as CM from "@components/blocks/copymodal";
+import copyImage from "@assets/images/copyimage.png";
 
 const Chat = () => {
   const [curDepth, nextDepth] = useState(1);
   const [choiceList, updateList] = useState<string[]>([]);
   const [role, setRole] = useState(0);
   const [to, setTo] = useState(-1);
+  const [responses, setResponse] = useState<string[]>([]);
+  const [curInput, setInput] = useState("");
+  const [isAlertModalOn, setAlertModal] = useRecoilState(alertModal);
+  const [isCopyModalOn, setCopyModal] = useRecoilState(copyModalState);
+  const [isCopyFirst, setCopyFirst] = useRecoilState(copyModalisFirst);
+
   useEffect(() => {
     var question_div = document.getElementById("questions");
     if (question_div) {
@@ -25,7 +44,7 @@ const Chat = () => {
         behavior: "smooth",
       });
     }
-  }, [curDepth, choiceList]);
+  }, [curDepth, choiceList, responses]);
   const navigate = useNavigate();
   const LogoButtonHandler = () => {
     navigate("/");
@@ -33,6 +52,32 @@ const Chat = () => {
 
   const ReloadHandler = () => {
     window.location.reload();
+  };
+
+  const SendHandler = () => {
+    if (curDepth > 3) {
+      setResponse((oldArray) => [...oldArray, curInput]);
+      setInput("");
+    }
+  };
+
+  const changeHandler = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setInput(e.target.value);
+  };
+
+  const enterHandler = (e: { key: string }) => {
+    if (e.key === "Enter") {
+      SendHandler();
+    }
+  };
+  const alertModalHander = () => {
+    setAlertModal(false);
+  };
+  const copyModalHander = () => {
+    setCopyModal(false);
+    setCopyFirst(false);
   };
   return (
     <>
@@ -101,30 +146,24 @@ const Chat = () => {
               <></>
             )}
             {curDepth >= 4 ? (
-              <LoadingWrapper>
-                <HeightBox height="210rem" />
-                <Loading src={LoadingImg} alt="" />
-                <HeightBox height="210rem" />
-              </LoadingWrapper>
+              <>
+                <LoadingWrapper>
+                  <HeightBox height="210rem" />
+                  <Loading src={LoadingImg} alt="" />
+                  <HeightBox height="210rem" />
+                </LoadingWrapper>
+                <ResponseMessage text="응답 텍스트"></ResponseMessage>
+                <PostResponseImg src={PostResponse} alt="" />
+                {responses ? (
+                  responses.map((item) => <UserRequest text={item} />)
+                ) : (
+                  <></>
+                )}
+              </>
             ) : (
               <></>
             )}
-            {/* {curDepth >= 4 ? (
-              <Message
-                name="음"
-                question="네 좋아요. 마지막으로 글에 대한 자세한 설명을 적어주세요."
-                depth={4}
-                role={0}
-                curDepth={curDepth}
-                isSystem={true}
-                nextDepth={nextDepth}
-                updateList={updateList}
-              />
-            ) : (
-              <></>
-            )} */}
           </ResponseWrapper>
-          {/* <HeightBox height="263rem" /> */}
           <InputReloadWrapper>
             <ReloadButton onClick={ReloadHandler}>
               <ReloadImg src={ReloadImage} alt=""></ReloadImg>
@@ -141,13 +180,17 @@ const Chat = () => {
               <HeightBox height="20rem" />
               <InputSendWrapper>
                 {curDepth > 3 ? (
-                  <InputBox></InputBox>
+                  <InputBox
+                    onChange={changeHandler}
+                    value={curInput}
+                    onKeyPress={enterHandler}
+                  ></InputBox>
                 ) : (
                   <InputBox placeholder="3번의 질문에 응답한 후 더 구체적인 상황을 쓸 수 있어요"></InputBox>
                 )}
 
                 <WidthBox width="35rem" />
-                <SendWrapper curDepth={curDepth}>
+                <SendWrapper curDepth={curDepth} onClick={SendHandler}>
                   <SendText>보내기</SendText>
                   <WidthBox width="10rem" />
                   <SendImg src={SendLogo} alt=""></SendImg>
@@ -157,6 +200,41 @@ const Chat = () => {
           </InputReloadWrapper>
         </ChatWrapper>
       </MainWrapper>
+      {isAlertModalOn ? (
+        <AM.ModalBackground>
+          <AM.ModalWrapper>
+            <AM.ModalAlertImg src={AlertImg} alt="" />
+            <AM.ModalAlertText>
+              한 번 고른 항목은 바꿀 수 없어요
+              <br />
+              <AM.BlueText>다시하기</AM.BlueText>를 눌러주세요!
+            </AM.ModalAlertText>
+            <AM.ModalCloseButton onClick={alertModalHander}>
+              확인
+            </AM.ModalCloseButton>
+          </AM.ModalWrapper>
+        </AM.ModalBackground>
+      ) : (
+        <></>
+      )}
+
+      {isCopyFirst && isCopyModalOn ? (
+        <CM.ModalBackground>
+          <CM.ModalWrapper>
+            <CM.ModalCopyImg src={copyImage} alt="" />
+            <CM.ModalCopyText>
+              클립보드에 복사되었습니다!
+              <br />
+              성공적인 글쓰기를 응원해요
+            </CM.ModalCopyText>
+            <CM.ModalCloseButton onClick={copyModalHander}>
+              확인
+            </CM.ModalCloseButton>
+          </CM.ModalWrapper>
+        </CM.ModalBackground>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
@@ -337,4 +415,12 @@ const InputReloadWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+`;
+
+const PostResponseImg = styled.img`
+  width: 311rem;
+  height: 151.57rem;
+  margin: 0 auto;
+  margin-top: 10rem;
+  margin-bottom: 44rem;
 `;
