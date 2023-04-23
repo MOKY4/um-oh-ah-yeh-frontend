@@ -19,7 +19,7 @@ const Choiced = styled.button`
   padding: 5rem 20rem;
 
   // width: 100rem;
-  // height: 32rem;
+  // height: 33rem;
 
   background: #ffe1c6;
   border: 1.2rem solid #ff983b;

@@ -128,7 +128,7 @@ const Chat = () => {
   };
 
   const SendHandler = () => {
-    if (curDepth > 3 && curInput.length !== 0) {
+    if (curDepth > 3 && curInput.length !== 0 && responses.length % 2 !== 1) {
       setResponse((oldArray) => [...oldArray, curInput]);
       setInput("");
       if (ws.current) {
@@ -413,7 +413,7 @@ const ChatWrapper = styled.div`
 `;
 
 const ResponseWrapper = styled.div`
-  height: ${window.innerHeight - (375 / 1920) * window.innerWidth}px;
+  height: ${window.innerHeight - (400 / 1920) * window.innerWidth}px;
   width: 1270rem;
   display: flex;
   flex-direction: column;
@@ -425,7 +425,7 @@ const ResponseWrapper = styled.div`
 `;
 
 const InputWrapper = styled.div`
-  height: 205rem;
+  height: 199rem;
   width: 1270rem;
   background: #fdfdfd;
   /* 2 */
@@ -433,8 +433,9 @@ const InputWrapper = styled.div`
   border: 1px solid #838383;
   border-radius: 20rem;
   margin: 0 auto;
-  margin-bottom: 90rem;
-  // display: flex;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50rem;
 `;
 
 const Loading = styled.img`
@@ -451,7 +452,7 @@ const LoadingWrapper = styled.div`
 const ChoicesWrapper = styled.div`
   display: flex;
   height: 33rem;
-  margin-top: 26.19rem;
+  margin-top: 31.5rem;
   margin-left: 30rem;
 `;
 
@@ -546,7 +547,9 @@ const ReloadButton = styled.div`
   // left: 1479rem;
   // top: 733rem;
   cursor: pointer;
-  margin-bottom: 10rem;
+  margin-top: 5rem;
+  margin-bottom: -5rem;
+  transform: translate(5%, 0);
 `;
 
 const ReloadImg = styled.img`
