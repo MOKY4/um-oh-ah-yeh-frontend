@@ -13,6 +13,16 @@ import ReloadImage from "@assets/images/reload.png";
 import ResponseMessage from "@blocks/response";
 import UserRequest from "@blocks/userrequest";
 import PostResponse from "@assets/images/postresponse.png";
+import { useRecoilState } from "recoil";
+import {
+  alertModal,
+  copyModalState,
+  copyModalisFirst,
+} from "atoms/modalstates";
+import AlertImg from "@assets/images/alertimage.png";
+import * as AM from "@components/blocks/alertmodal";
+import * as CM from "@components/blocks/copymodal";
+import copyImage from "@assets/images/copyimage.png";
 
 const Chat = () => {
   const [curDepth, nextDepth] = useState(1);
@@ -21,6 +31,10 @@ const Chat = () => {
   const [to, setTo] = useState(-1);
   const [responses, setResponse] = useState<string[]>([]);
   const [curInput, setInput] = useState("");
+  const [isAlertModalOn, setAlertModal] = useRecoilState(alertModal);
+  const [isCopyModalOn, setCopyModal] = useRecoilState(copyModalState);
+  const [isCopyFirst, setCopyFirst] = useRecoilState(copyModalisFirst);
+
   useEffect(() => {
     var question_div = document.getElementById("questions");
     if (question_div) {
@@ -57,6 +71,13 @@ const Chat = () => {
     if (e.key === "Enter") {
       SendHandler();
     }
+  };
+  const alertModalHander = () => {
+    setAlertModal(false);
+  };
+  const copyModalHander = () => {
+    setCopyModal(false);
+    setCopyFirst(false);
   };
   return (
     <>
@@ -131,7 +152,7 @@ const Chat = () => {
                   <Loading src={LoadingImg} alt="" />
                   <HeightBox height="210rem" />
                 </LoadingWrapper>
-                <ResponseMessage></ResponseMessage>
+                <ResponseMessage text="응답 텍스트"></ResponseMessage>
                 <PostResponseImg src={PostResponse} alt="" />
                 {responses ? (
                   responses.map((item) => <UserRequest text={item} />)
@@ -179,6 +200,41 @@ const Chat = () => {
           </InputReloadWrapper>
         </ChatWrapper>
       </MainWrapper>
+      {isAlertModalOn ? (
+        <AM.ModalBackground>
+          <AM.ModalWrapper>
+            <AM.ModalAlertImg src={AlertImg} alt="" />
+            <AM.ModalAlertText>
+              한 번 고른 항목은 바꿀 수 없어요
+              <br />
+              <AM.BlueText>다시하기</AM.BlueText>를 눌러주세요!
+            </AM.ModalAlertText>
+            <AM.ModalCloseButton onClick={alertModalHander}>
+              확인
+            </AM.ModalCloseButton>
+          </AM.ModalWrapper>
+        </AM.ModalBackground>
+      ) : (
+        <></>
+      )}
+
+      {isCopyFirst && isCopyModalOn ? (
+        <CM.ModalBackground>
+          <CM.ModalWrapper>
+            <CM.ModalCopyImg src={copyImage} alt="" />
+            <CM.ModalCopyText>
+              클립보드에 복사되었습니다!
+              <br />
+              성공적인 글쓰기를 응원해요
+            </CM.ModalCopyText>
+            <CM.ModalCloseButton onClick={copyModalHander}>
+              확인
+            </CM.ModalCloseButton>
+          </CM.ModalWrapper>
+        </CM.ModalBackground>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

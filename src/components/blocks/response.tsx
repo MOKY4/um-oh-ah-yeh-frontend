@@ -1,9 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import Systemthumb from "@assets/images/SystemThumb.png";
-import CopyImg from "@assets/images/copy.png";
+import CopyImage from "@assets/images/copy.png";
+import { useRecoilState } from "recoil";
+import { copyModalState } from "atoms/modalstates";
 
-const ResponseMessage = () => {
+interface ResponseProps {
+  text: string;
+}
+
+const ResponseMessage = (props: ResponseProps) => {
+  const [isCopyModalOn, setCopyModal] = useRecoilState(copyModalState);
   const CopyHandler = (id: string) => {
     var range = document.createRange();
     var copyText = document.getElementById(id);
@@ -14,44 +21,35 @@ const ResponseMessage = () => {
     window.getSelection()?.addRange(range); // to select text
     document.execCommand("copy");
     window.getSelection()?.removeAllRanges(); // to deselect
+    setCopyModal(true);
   };
-
   return (
     <MainWrapper>
       <ResponseWrapper>
         <ProfileWrapper>
           <ProfileThumb src={Systemthumb} alt="" />
           <ResponseText id="ResponseText-1">
-            안녕하세요 차장님, 저는 최근에 귀사에 신입사원으로 입사했습니다.
-            현재 맡은 업무를 수행하며 중요한 내용을 보고드리려고 합니다. 우선,
-            저는 [해당 업무의 명칭 또는 내용]을 맡아 진행 중입니다. 이번 주에는
-            [해당 업무의 주요 내용]을 수행하여 [해당 결과]를 도출해냈습니다.
-            이에 대한 자세한 내용은 [작성한 보고서나 문서의 이름]에 첨부하였으니
-            참고 부탁드립니다. 또한, [해당 업무] 수행 중 발생한 이슈에 대해서는
-            [해당 내용]으로 인해 [해당 결과]가 발생하였습니다. 이에 대한 대응
-            방안으로 [해당 내용]을 제안하고자 합니다. 마지막으로, 앞으로 [해당
-            업무]를 수행할 때 [해당 내용]에 대한 고려가 필요하며, 그에 따른 대응
-            전략을 강구하여 더욱 원활한 업무 수행에 도움이 되도록
-            노력하겠습니다. 감사합니다.이에 대한 대응 방안으로 [해당 내용]을
-            제안하고자 합니다. 마지막으로, 앞으로 [해당 업무]를 수행할 때 [해당
-            내용]에 대한 고려가 필요하며, 그에 따른 대응 전략을 강구하여 더욱
-            원활한 업무 수행에 도움이 되도록 노력하겠습니다. 감사합니다. 이에
-            대한 대응 방안으로 [해당 내용]을 제안하고자 합니다. 마지막으로,
-            앞으로 [해당 업무]를 수행할 때 [해당 내용]에 대한 고려가 필요하며,
-            그에 따른 대응 전략을 강구하여 더욱 원활한 업무 수행에 도움이 되도록
-            노력하겠습니다. 감사합니다.이에 대한 대응 방안으로 [해당 내용]을
-            제안하고자 합니다. 마지막으로, 앞으로 [해당 업무]를 수행할 때 [해당
-            내용]에 대한 고려가 필요하며, 그에 따른 대응 전략을 강구하여 더욱
-            원활한 업무 수행에 도움이 되도록 노력하겠습니다. 감사합니다.
+            안녕하세요 차장님, <br />
+            저는 최근에 귀사에 신입사원으로 입사했습니다. 현재 맡은 업무를
+            수행하며 중요한 내용을 보고드리려고 합니다. <br />
+            우선, 저는 [해당 업무의 명칭 또는 내용]을 맡아 진행 중입니다. 이번
+            주에는 [해당 업무의 주요 내용]을 수행하여 [해당 결과]를
+            도출해냈습니다. 이에 대한 자세한 내용은 [작성한 보고서나 문서의
+            이름]에 첨부하였으니 참고 부탁드립니다. <br />
+            또한, [해당 업무] 수행 중 발생한 이슈에 대해서는 [해당 내용]으로
+            인해 [해당 결과]가 발생하였습니다. 이에 대한 대응 방안으로 [해당
+            내용]을 제안하고자 합니다. 마지막으로, 앞으로 [해당 업무]를 수행할
+            때 [해당 내용]에 대한 고려가 필요하며, 그에 따른 대응 전략을
+            강구하여 더욱 원활한 업무 수행에 도움이 되도록 노력하겠습니다.
+            <br />
+            감사합니다.
           </ResponseText>
         </ProfileWrapper>
       </ResponseWrapper>
       <CopyWrapper>
-        <CopyButton
-          src={CopyImg}
-          alt=""
-          onClick={() => CopyHandler("ResponseText-1")}
-        />
+        <CopyButton onClick={() => CopyHandler("ResponseText-1")}>
+          <CopyImg src={CopyImage} alt="" />
+        </CopyButton>
       </CopyWrapper>
     </MainWrapper>
   );
@@ -105,6 +103,7 @@ const ResponseText = styled.span`
   word-break: keep-all;
   margin-top: 35rem;
   margin-bottom: 30rem;
+  white-space: pre-line;
 `;
 
 const CopyWrapper = styled.div`
@@ -117,8 +116,21 @@ const CopyWrapper = styled.div`
   align-items: end;
 `;
 
-const CopyButton = styled.img`
+const CopyButton = styled.div`
   width: 50rem;
   height: 50rem;
+  background: #3a79e3;
+  &:active {
+    background: #1c52ac;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10rem;
   cursor: pointer;
+`;
+
+const CopyImg = styled.img`
+  width: 24rem;
+  height: 24rem;
 `;
