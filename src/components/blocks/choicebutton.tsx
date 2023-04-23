@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
-import { alertModal } from "atoms/alertmodalstate";
+import { alertModal } from "atoms/modalstates";
 
 interface Props {
   selected: number;

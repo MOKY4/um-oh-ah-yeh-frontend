@@ -2,8 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import Systemthumb from "@assets/images/SystemThumb.png";
 import CopyImage from "@assets/images/copy.png";
+import { useRecoilState } from "recoil";
+import { copyModalState } from "atoms/modalstates";
 
-const ResponseMessage = () => {
+interface ResponseProps {
+  text: string;
+}
+
+const ResponseMessage = (props: ResponseProps) => {
+  const [isCopyModalOn, setCopyModal] = useRecoilState(copyModalState);
   const CopyHandler = (id: string) => {
     var range = document.createRange();
     var copyText = document.getElementById(id);
@@ -14,8 +21,8 @@ const ResponseMessage = () => {
     window.getSelection()?.addRange(range); // to select text
     document.execCommand("copy");
     window.getSelection()?.removeAllRanges(); // to deselect
+    setCopyModal(true);
   };
-
   return (
     <MainWrapper>
       <ResponseWrapper>
@@ -40,12 +47,8 @@ const ResponseMessage = () => {
         </ProfileWrapper>
       </ResponseWrapper>
       <CopyWrapper>
-        <CopyButton>
-          <CopyImg
-            src={CopyImage}
-            alt=""
-            onClick={() => CopyHandler("ResponseText-1")}
-          />
+        <CopyButton onClick={() => CopyHandler("ResponseText-1")}>
+          <CopyImg src={CopyImage} alt="" />
         </CopyButton>
       </CopyWrapper>
     </MainWrapper>
