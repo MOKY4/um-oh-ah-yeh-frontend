@@ -44,6 +44,7 @@ const Message = (props: Props) => {
         {props.depth === 1 ? (
           ["신입사원", "대학생", "일반"].map((item, index) => (
             <ChoiceButton
+              key={item}
               selected={selected}
               setChoice={setChoice}
               choice_id={index}
@@ -62,6 +63,7 @@ const Message = (props: Props) => {
         {props.depth === 2 ? (
           question[props.role][2].map((item, index) => (
             <ChoiceButton
+              key={item}
               selected={selected}
               setChoice={setChoice}
               choice_id={index}
@@ -80,6 +82,7 @@ const Message = (props: Props) => {
         {props.depth === 3 ? (
           question[props.role][3][props.to].map((item, index) => (
             <ChoiceButton
+              key={item}
               selected={selected}
               setChoice={setChoice}
               choice_id={index}

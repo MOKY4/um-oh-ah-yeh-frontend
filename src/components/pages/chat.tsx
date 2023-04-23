@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import HeightBox from "@blocks/heightblock";
 import WidthBox from "@blocks/widthblock";
@@ -23,6 +23,9 @@ import AlertImg from "@assets/images/alertimage.png";
 import * as AM from "@components/blocks/alertmodal";
 import * as CM from "@components/blocks/copymodal";
 import copyImage from "@assets/images/copyimage.png";
+import gptloading from "@assets/images/gptloading.gif";
+import gptloadingalt from "@assets/images/gptloadingalt.png";
+import gpterror from "@assets/images/gpterror.png";
 
 const Chat = () => {
   const [curDepth, nextDepth] = useState(1);
@@ -34,6 +37,77 @@ const Chat = () => {
   const [isAlertModalOn, setAlertModal] = useRecoilState(alertModal);
   const [isCopyModalOn, setCopyModal] = useRecoilState(copyModalState);
   const [isCopyFirst, setCopyFirst] = useRecoilState(copyModalisFirst);
+  const [socketConnected, setSocketConnected] = useState(false);
+  const [sendMsg, setSendMsg] = useState(false);
+  const [countError, setError] = useState(false);
+
+  // dotenv.config();
+  const webSocketUrl = process.env.REACT_APP_API_ENDPOINT!;
+  let ws = useRef<WebSocket | null>(null);
+
+  useEffect(() => {
+    if (!ws.current) {
+      ws.current = new WebSocket(webSocketUrl);
+      ws.current.onopen = () => {
+        // console.log("connected");
+        setSocketConnected(true);
+      };
+      ws.current.onclose = () => {
+        // console.log("connection closed");
+      };
+    }
+
+    // return () => {
+    //   ws.current?.close();
+    // };
+  }, []);
+
+  useEffect(() => {
+    if (socketConnected) {
+      if (ws.current) {
+        ws.current.send(
+          JSON.stringify({
+            action: "sendmessage",
+            message: "글 좀 써줘",
+          })
+        );
+      }
+      setSendMsg(true);
+    }
+  }, [socketConnected]);
+
+  useEffect(() => {
+    if (sendMsg) {
+      if (ws.current) {
+        ws.current.onmessage = (e: MessageEvent) => {
+          const data = e.data;
+          if (data[0] === "{" && data[data.length - 1] === "}") {
+            // console.log("에러났다!");
+            if (data.includes("Internal server error")) {
+              setError(true);
+            }
+          } else {
+            setResponse((oldArray) => [...oldArray, e.data]);
+            // console.log(data);
+          }
+        };
+      }
+    }
+  }, [sendMsg]);
+
+  useEffect(() => {
+    if (curDepth === 4) {
+      if (ws.current) {
+        ws.current.send(
+          JSON.stringify({
+            action: "sendmessage",
+            message: `나는 ${choiceList[0]}이고, ${choiceList[1]}에게, ${choiceList[2]}을 할거야`,
+          })
+        );
+        // console.log("First Request send");
+      }
+    }
+  }, [curDepth, choiceList]);
 
   useEffect(() => {
     var question_div = document.getElementById("questions");
@@ -51,13 +125,23 @@ const Chat = () => {
   };
 
   const ReloadHandler = () => {
+    ws.current?.close();
     window.location.reload();
   };
 
   const SendHandler = () => {
-    if (curDepth > 3) {
+    if (curDepth > 3 && curInput.length !== 0 && responses.length % 2 !== 1) {
       setResponse((oldArray) => [...oldArray, curInput]);
       setInput("");
+      if (ws.current) {
+        ws.current.send(
+          JSON.stringify({
+            action: "sendmessage",
+            message: curInput,
+          })
+        );
+        // console.log("message send");
+      }
     }
   };
 
@@ -79,6 +163,43 @@ const Chat = () => {
     setCopyModal(false);
     setCopyFirst(false);
   };
+
+  if (countError) {
+    return (
+      <>
+        <PageHeader>
+          <Logo src={HeaderLogo} alt="" onClick={LogoButtonHandler}></Logo>
+        </PageHeader>
+        <PageHeaderBack></PageHeaderBack>
+        <HeaderLine />
+        <HeightBox height="342rem" />
+        <GPTErrorWrapper>
+          <GPTError src={gpterror} alt="" />
+          <HeightBox height="21rem" />
+          <GPTErrorText>
+            접속자 수가 많으니 잠시 후 다시 시도해주세요
+          </GPTErrorText>
+        </GPTErrorWrapper>
+      </>
+    );
+  }
+  if (responses.length === 0) {
+    return (
+      <>
+        <PageHeader>
+          <Logo src={HeaderLogo} alt="" onClick={LogoButtonHandler}></Logo>
+        </PageHeader>
+        <PageHeaderBack></PageHeaderBack>
+        <HeaderLine />
+        <HeightBox height="220rem" />
+        <GPTLoadingWrapper>
+          <GPTLoading src={gptloading} alt={gptloadingalt} />
+          <GPTLoadingText>로딩 중이에요... 잠시만 기다려주세요!</GPTLoadingText>
+        </GPTLoadingWrapper>
+      </>
+    );
+  }
+
   return (
     <>
       <PageHeader>
@@ -128,34 +249,71 @@ const Chat = () => {
               <></>
             )}
             {curDepth >= 3 && to !== -1 ? (
-              <Message
-                name="음"
-                question="어떤 상황의 글을 작성하나요?"
-                depth={3}
-                role={role}
-                curDepth={curDepth}
-                isSystem={true}
-                choiceList={choiceList}
-                to={to}
-                setTo={setTo}
-                setRole={setRole}
-                nextDepth={nextDepth}
-                updateList={updateList}
-              />
+              <>
+                <Message
+                  name="음"
+                  question="어떤 상황의 글을 작성하나요?"
+                  depth={3}
+                  role={role}
+                  curDepth={curDepth}
+                  isSystem={true}
+                  choiceList={choiceList}
+                  to={to}
+                  setTo={setTo}
+                  setRole={setRole}
+                  nextDepth={nextDepth}
+                  updateList={updateList}
+                />
+              </>
             ) : (
               <></>
             )}
             {curDepth >= 4 ? (
               <>
-                <LoadingWrapper>
-                  <HeightBox height="210rem" />
-                  <Loading src={LoadingImg} alt="" />
-                  <HeightBox height="210rem" />
-                </LoadingWrapper>
-                <ResponseMessage text="응답 텍스트"></ResponseMessage>
-                <PostResponseImg src={PostResponse} alt="" />
+                {/* <HeightBox height="210rem" /> */}
+                {/* {responses.length === 1 ? (
+                  <LoadingWrapper>
+                    <HeightBox height="210rem" />
+                    <Loading src={LoadingImg} alt="" />
+                    <HeightBox height="210rem" />
+                  </LoadingWrapper>
+                ) : (
+                  <></>
+                )} */}
+
                 {responses ? (
-                  responses.map((item) => <UserRequest text={item} />)
+                  responses.map((item, index) =>
+                    index % 2 === 1 ? (
+                      <div key={item}>
+                        <ResponseMessage text={item} responseID={index} />
+                        {responses.length === 1 ? (
+                          <PostResponseImg src={PostResponse} alt="" />
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                    ) : index === 0 ? (
+                      <></>
+                    ) : (
+                      <UserRequest text={item} />
+                    )
+                  )
+                ) : (
+                  <></>
+                )}
+
+                {responses ? (
+                  responses.length % 2 === 1 ? (
+                    <>
+                      <LoadingWrapper>
+                        <HeightBox height="100rem" />
+                        <Loading src={LoadingImg} alt="" />
+                        <HeightBox height="100rem" />
+                      </LoadingWrapper>
+                    </>
+                  ) : (
+                    <></>
+                  )
                 ) : (
                   <></>
                 )}
@@ -172,7 +330,9 @@ const Chat = () => {
             <InputWrapper>
               <ChoicesWrapper>
                 {choiceList ? (
-                  choiceList.map((item) => <UserChoiceButton text={item} />)
+                  choiceList.map((item) => (
+                    <UserChoiceButton key={item} text={item} />
+                  ))
                 ) : (
                   <></>
                 )}
@@ -182,7 +342,7 @@ const Chat = () => {
                 {curDepth > 3 ? (
                   <InputBox
                     onChange={changeHandler}
-                    value={curInput}
+                    value={curInput || ""}
                     onKeyPress={enterHandler}
                   ></InputBox>
                 ) : (
@@ -190,7 +350,11 @@ const Chat = () => {
                 )}
 
                 <WidthBox width="35rem" />
-                <SendWrapper curDepth={curDepth} onClick={SendHandler}>
+                <SendWrapper
+                  rescount={responses.length}
+                  curDepth={curDepth}
+                  onClick={SendHandler}
+                >
                   <SendText>보내기</SendText>
                   <WidthBox width="10rem" />
                   <SendImg src={SendLogo} alt=""></SendImg>
@@ -262,7 +426,7 @@ const ChatWrapper = styled.div`
 `;
 
 const ResponseWrapper = styled.div`
-  height: 835rem;
+  height: ${window.innerHeight - (400 / 1920) * window.innerWidth}px;
   width: 1270rem;
   display: flex;
   flex-direction: column;
@@ -274,7 +438,7 @@ const ResponseWrapper = styled.div`
 `;
 
 const InputWrapper = styled.div`
-  height: 205rem;
+  height: 199rem;
   width: 1270rem;
   background: #fdfdfd;
   /* 2 */
@@ -282,8 +446,9 @@ const InputWrapper = styled.div`
   border: 1px solid #838383;
   border-radius: 20rem;
   margin: 0 auto;
-  margin-bottom: 90rem;
-  // display: flex;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50rem;
 `;
 
 const Loading = styled.img`
@@ -300,7 +465,7 @@ const LoadingWrapper = styled.div`
 const ChoicesWrapper = styled.div`
   display: flex;
   height: 33rem;
-  margin-top: 26.19rem;
+  margin-top: 31.5rem;
   margin-left: 30rem;
 `;
 
@@ -338,6 +503,7 @@ const InputBox = styled.input`
 
 interface SendType {
   curDepth: number;
+  rescount: number;
 }
 
 const SendWrapper = styled.div<SendType>`
@@ -347,7 +513,9 @@ const SendWrapper = styled.div<SendType>`
   /* GRAY 01 */
   ${(props) =>
     props.curDepth > 3
-      ? "background: #FF983B;cursor: pointer;"
+      ? props.rescount % 2 === 0
+        ? "background: #FF983B;cursor: pointer;"
+        : "background: #F0F0F0;"
       : "background: #F0F0F0;"}
 
   border-radius: 10rem;
@@ -392,7 +560,9 @@ const ReloadButton = styled.div`
   // left: 1479rem;
   // top: 733rem;
   cursor: pointer;
-  margin-bottom: 10rem;
+  margin-top: 5rem;
+  margin-bottom: -5rem;
+  transform: translate(5%, 0);
 `;
 
 const ReloadImg = styled.img`
@@ -421,6 +591,56 @@ const PostResponseImg = styled.img`
   width: 311rem;
   height: 151.57rem;
   margin: 0 auto;
-  margin-top: 10rem;
+  margin-top: 50rem;
   margin-bottom: 44rem;
+`;
+const GPTLoadingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+`;
+const GPTLoading = styled.img`
+  width: 400rem;
+  height: 377.36rem;
+  margin: 0 auto;
+`;
+
+const GPTLoadingText = styled.span`
+  font-family: "AppleSDGothicNeoM00";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17rem;
+  line-height: 22rem;
+  /* identical to box height */
+
+  /* GRAY 02 */
+
+  color: #838383;
+  margin: 0 auto;
+`;
+
+const GPTErrorWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+`;
+
+const GPTError = styled.img`
+  width: 345rem;
+  height: 153rem;
+  margin: 0 auto;
+`;
+
+const GPTErrorText = styled.span`
+  font-family: "AppleSDGothicNeoM00";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17rem;
+  line-height: 22rem;
+  /* identical to box height */
+
+  /* GRAY 02 */
+
+  color: #838383;
+  margin: 0 auto;
 `;
