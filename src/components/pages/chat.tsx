@@ -40,7 +40,7 @@ const Chat = () => {
   const [countError, setError] = useState(false);
 
   // dotenv.config();
-  const webSocketUrl: string | undefined = process.env.REACT_APP_API_ENDPOINT;
+  const webSocketUrl = process.env.REACT_APP_API_ENDPOINT!;
   let ws = useRef<WebSocket | null>(null);
 
   useEffect(() => {
