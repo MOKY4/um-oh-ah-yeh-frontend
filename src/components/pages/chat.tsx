@@ -29,7 +29,7 @@ const Chat = () => {
   const [choiceList, updateList] = useState<string[]>([]);
   const [role, setRole] = useState(0);
   const [to, setTo] = useState(-1);
-  const [responses, setResponse] = useState<string[]>([]);
+  const [responses, setResponse] = useState<string[]>(["답변이에용"]);
   const [curInput, setInput] = useState("");
   const [isAlertModalOn, setAlertModal] = useRecoilState(alertModal);
   const [isCopyModalOn, setCopyModal] = useRecoilState(copyModalState);
@@ -55,7 +55,7 @@ const Chat = () => {
   };
 
   const SendHandler = () => {
-    if (curDepth > 3) {
+    if (curDepth > 3 && curInput.length !== 0) {
       setResponse((oldArray) => [...oldArray, curInput]);
       setInput("");
     }
@@ -147,15 +147,32 @@ const Chat = () => {
             )}
             {curDepth >= 4 ? (
               <>
-                <LoadingWrapper>
-                  <HeightBox height="210rem" />
-                  <Loading src={LoadingImg} alt="" />
-                  <HeightBox height="210rem" />
-                </LoadingWrapper>
-                <ResponseMessage text="응답 텍스트"></ResponseMessage>
-                <PostResponseImg src={PostResponse} alt="" />
+                <HeightBox height="210rem" />
+                {responses.length === 0 ? (
+                  <LoadingWrapper>
+                    <HeightBox height="210rem" />
+                    <Loading src={LoadingImg} alt="" />
+                    <HeightBox height="210rem" />
+                  </LoadingWrapper>
+                ) : (
+                  <></>
+                )}
+
                 {responses ? (
-                  responses.map((item) => <UserRequest text={item} />)
+                  responses.map((item, index) =>
+                    index % 2 === 0 ? (
+                      <>
+                        <ResponseMessage text={item} responseID={index} />
+                        {responses.length === 1 ? (
+                          <PostResponseImg src={PostResponse} alt="" />
+                        ) : (
+                          <></>
+                        )}
+                      </>
+                    ) : (
+                      <UserRequest text={item} />
+                    )
+                  )
                 ) : (
                   <></>
                 )}
@@ -421,6 +438,6 @@ const PostResponseImg = styled.img`
   width: 311rem;
   height: 151.57rem;
   margin: 0 auto;
-  margin-top: 10rem;
+  margin-top: 50rem;
   margin-bottom: 44rem;
 `;
