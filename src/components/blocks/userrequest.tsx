@@ -10,8 +10,8 @@ const UserRequest = (props: Props) => {
   return (
     <MainWrapper>
       <ResponseWrapper>
-        <ResponseText>{props.text}</ResponseText>
         <ResponseImg src={UserImg} alt="" />
+        <ResponseText>{props.text}</ResponseText>
       </ResponseWrapper>
     </MainWrapper>
   );
@@ -39,7 +39,7 @@ const ResponseWrapper = styled.div`
 
 const ResponseText = styled.span`
     width: 1127rem;
-    margin-left: 50rem;
+    margin-left: 20rem;
     margin-right: 20rem:
     font-family: 'AppleSDGothicNeoM00';
     font-style: normal;
@@ -57,4 +57,5 @@ const ResponseText = styled.span`
 const ResponseImg = styled.img`
   width: 40rem;
   height: 40rem;
+  margin-left: 50rem;
 `;
