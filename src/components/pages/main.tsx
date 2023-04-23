@@ -176,6 +176,7 @@ const CenterContents = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-left: 40rem;
 `;
 
 const TextColumn = styled.div`
@@ -358,14 +359,14 @@ const FirstIMG = styled.img`
   position: absolute;
   width: 840rem;
   height: 560rem;
-  top: 1733rem;
+  top: 1683rem;
   left: 249rem;
 `;
 const SecondIMG = styled.img`
   position: absolute;
   width: 420rem;
   height: 500rem;
-  top: 2155rem;
+  top: 2105rem;
   right: 251rem;
 `;
 
