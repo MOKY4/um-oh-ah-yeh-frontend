@@ -11,6 +11,7 @@ import SecondDescIMG1 from "@assets/images/SecondDesc1.png";
 import SecondDescIMG2 from "@assets/images/SecondDesc2.png";
 import FooterLogo from "@assets/images/footerlogo.png";
 import githubimg from "@assets/images/githublogo.png";
+import mobilemain from "@assets/images/mobilemain.png";
 
 const Main = () => {
   const navigate = useNavigate();
@@ -23,6 +24,21 @@ const Main = () => {
   const GithubHandler = (link: string) => {
     window.location.href = link;
   };
+  const isMobile = function () {
+    const match = window.matchMedia("(pointer:coarse)");
+    return match && match.matches;
+  };
+  if (isMobile()) {
+    return (
+      <MobileWrapper>
+        <MobileModalWrapper>
+          <MobileIMG src={mobilemain} alt="" />
+          <HeightBox height="20px" />
+          <MobileText>PC 웹으로 접속해주세요!</MobileText>
+        </MobileModalWrapper>
+      </MobileWrapper>
+    );
+  }
 
   return (
     <MainWrapper>
@@ -176,6 +192,7 @@ const CenterContents = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-left: 40rem;
 `;
 
 const TextColumn = styled.div`
@@ -358,14 +375,14 @@ const FirstIMG = styled.img`
   position: absolute;
   width: 840rem;
   height: 560rem;
-  top: 1733rem;
+  top: 1683rem;
   left: 249rem;
 `;
 const SecondIMG = styled.img`
   position: absolute;
   width: 420rem;
   height: 500rem;
-  top: 2155rem;
+  top: 2105rem;
   right: 251rem;
 `;
 
@@ -430,4 +447,51 @@ const GithubIMG = styled.img`
   height: 22rem;
   transform: translate(20%, 20%);
   cursor: pointer;
+`;
+
+const MobileWrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3);
+`;
+
+const MobileModalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 330px;
+  height: 330px;
+  margin: 0 auto;
+  /* GRAY 00 */
+  // margin-top: 20vh;
+  background: #ffffff;
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+`;
+
+const MobileIMG = styled.img`
+  width: 133.47px;
+  height: 110px;
+  margin: 0 auto;
+`;
+
+const MobileText = styled.span`
+  margin: 0 auto;
+  font-family: "AppleSDGothicNeoB00";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  /* identical to box height, or 144% */
+
+  text-align: center;
+
+  /* GRAY 03 */
+
+  color: #424242;
 `;

@@ -23,7 +23,9 @@ import AlertImg from "@assets/images/alertimage.png";
 import * as AM from "@components/blocks/alertmodal";
 import * as CM from "@components/blocks/copymodal";
 import copyImage from "@assets/images/copyimage.png";
-// import dotenv from "dotenv";
+import gptloading from "@assets/images/gptloading.gif";
+import gptloadingalt from "@assets/images/gptloadingalt.png";
+import gpterror from "@assets/images/gpterror.png";
 
 const Chat = () => {
   const [curDepth, nextDepth] = useState(1);
@@ -170,7 +172,14 @@ const Chat = () => {
         </PageHeader>
         <PageHeaderBack></PageHeaderBack>
         <HeaderLine />
-        <div>조금 이따가 시도하슈</div>
+        <HeightBox height="342rem" />
+        <GPTErrorWrapper>
+          <GPTError src={gpterror} alt="" />
+          <HeightBox height="21rem" />
+          <GPTErrorText>
+            접속자 수가 많으니 잠시 후 다시 시도해주세요
+          </GPTErrorText>
+        </GPTErrorWrapper>
       </>
     );
   }
@@ -182,7 +191,11 @@ const Chat = () => {
         </PageHeader>
         <PageHeaderBack></PageHeaderBack>
         <HeaderLine />
-        <div>로딩중</div>
+        <HeightBox height="220rem" />
+        <GPTLoadingWrapper>
+          <GPTLoading src={gptloading} alt={gptloadingalt} />
+          <GPTLoadingText>로딩 중이에요... 잠시만 기다려주세요!</GPTLoadingText>
+        </GPTLoadingWrapper>
       </>
     );
   }
@@ -293,9 +306,9 @@ const Chat = () => {
                   responses.length % 2 === 1 ? (
                     <>
                       <LoadingWrapper>
-                        <HeightBox height="50rem" />
+                        <HeightBox height="100rem" />
                         <Loading src={LoadingImg} alt="" />
-                        <HeightBox height="50rem" />
+                        <HeightBox height="100rem" />
                       </LoadingWrapper>
                     </>
                   ) : (
@@ -580,4 +593,54 @@ const PostResponseImg = styled.img`
   margin: 0 auto;
   margin-top: 50rem;
   margin-bottom: 44rem;
+`;
+const GPTLoadingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+`;
+const GPTLoading = styled.img`
+  width: 400rem;
+  height: 377.36rem;
+  margin: 0 auto;
+`;
+
+const GPTLoadingText = styled.span`
+  font-family: "AppleSDGothicNeoM00";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17rem;
+  line-height: 22rem;
+  /* identical to box height */
+
+  /* GRAY 02 */
+
+  color: #838383;
+  margin: 0 auto;
+`;
+
+const GPTErrorWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+`;
+
+const GPTError = styled.img`
+  width: 345rem;
+  height: 153rem;
+  margin: 0 auto;
+`;
+
+const GPTErrorText = styled.span`
+  font-family: "AppleSDGothicNeoM00";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17rem;
+  line-height: 22rem;
+  /* identical to box height */
+
+  /* GRAY 02 */
+
+  color: #838383;
+  margin: 0 auto;
 `;
