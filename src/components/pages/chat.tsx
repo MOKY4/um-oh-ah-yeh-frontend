@@ -23,6 +23,7 @@ import AlertImg from "@assets/images/alertimage.png";
 import * as AM from "@components/blocks/alertmodal";
 import * as CM from "@components/blocks/copymodal";
 import copyImage from "@assets/images/copyimage.png";
+import dotenv from "dotenv";
 
 const Chat = () => {
   const [curDepth, nextDepth] = useState(1);
@@ -38,6 +39,7 @@ const Chat = () => {
   const [sendMsg, setSendMsg] = useState(false);
   const [countError, setError] = useState(false);
 
+  dotenv.config();
   const webSocketUrl = process.env.REACT_APP_API_ENDPOINT;
   let ws = useRef<WebSocket | null>(null);
 
