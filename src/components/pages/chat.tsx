@@ -26,6 +26,7 @@ import copyImage from "@assets/images/copyimage.png";
 import gptloading from "@assets/images/gptloading.gif";
 import gptloadingalt from "@assets/images/gptloadingalt.png";
 import gpterror from "@assets/images/gpterror.png";
+import responseloadinggif from "@assets/images/responsegif.gif";
 
 const Chat = () => {
   const [curDepth, nextDepth] = useState(1);
@@ -307,7 +308,12 @@ const Chat = () => {
                     <>
                       <LoadingWrapper>
                         <HeightBox height="100rem" />
-                        <Loading src={LoadingImg} alt="" />
+                        <Loading src={responseloadinggif} alt="" />
+                        <HeightBox height="17rem" />
+                        <LoadingText>
+                          umm.. 이 열심히 답변을 생성하고 있어요. 조금만
+                          기다려주세요!
+                        </LoadingText>
                         <HeightBox height="100rem" />
                       </LoadingWrapper>
                     </>
@@ -452,8 +458,20 @@ const InputWrapper = styled.div`
 `;
 
 const Loading = styled.img`
-  width: 423rem;
-  height: 88rem;
+  width: 131.22rem;
+  height: 60rem;
+`;
+
+const LoadingText = styled.span`
+  font-family: "AppleSDGothicNeoM00";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17rem;
+  line-height: 22rem;
+
+  /* GRAY 02 */
+
+  color: #838383;
 `;
 
 const LoadingWrapper = styled.div`
