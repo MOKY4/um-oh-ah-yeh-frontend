@@ -3,7 +3,7 @@ import styled from "styled-components";
 import MainLogo from "@assets/images/MainLogo.png";
 import HeightBox from "@blocks/heightblock";
 import WidthBox from "@blocks/widthblock";
-import { PageHeader, PageHeaderBack, Logo } from "@blocks/headers";
+import { PageHeader, PageHeaderBack, Logo } from "@styles/headers";
 import HeaderLogo from "@assets/images/logo.png";
 import ummImage from "@assets/images/ummImage.png";
 import SecondDescIMG1 from "@assets/images/SecondDesc1.png";
