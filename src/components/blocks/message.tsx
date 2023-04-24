@@ -4,6 +4,8 @@ import ChoiceButton from "./choicebutton";
 import questions from "@assets/data/questions.json";
 import SystemThumb from "@assets/images/SystemThumb.png";
 import WidthBox from "./widthblock";
+import { useRecoilState } from "recoil";
+import { depthState, roleState, toState } from "atoms/messagestates";
 
 interface DataType {
   [key: number]: {
@@ -16,25 +18,21 @@ interface Props {
   name: string;
   question: string;
   depth: number;
-  role: number;
-  curDepth: number;
   isSystem: boolean;
-  choiceList: string[];
-  to: number;
-  setTo: React.Dispatch<React.SetStateAction<number>>;
-  setRole: React.Dispatch<React.SetStateAction<number>>;
-  nextDepth: React.Dispatch<React.SetStateAction<number>>;
-  updateList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const Message = (props: Props) => {
+  const [curDepth] = useRecoilState(depthState);
+  const [role] = useRecoilState(roleState);
+  const [to] = useRecoilState(toState);
+
   const [selected, setChoice] = useState(-1);
   const question: DataType = questions;
 
   return (
     <MessageWrapper
       isSystem={props.isSystem}
-      opacity={props.curDepth === props.depth ? 1 : 0.5}
+      opacity={curDepth === props.depth ? 1 : 0.5}
     >
       <ProfileImageBox>
         <SystemImg src={SystemThumb} alt="" />
@@ -50,18 +48,13 @@ const Message = (props: Props) => {
               choice_id={index}
               text={item}
               depth={props.depth}
-              curDepth={props.curDepth}
-              setTo={props.setTo}
-              setRole={props.setRole}
-              nextDepth={props.nextDepth}
-              updateList={props.updateList}
             ></ChoiceButton>
           ))
         ) : (
           <></>
         )}
         {props.depth === 2 ? (
-          question[props.role][2].map((item, index) => (
+          question[role][2].map((item, index) => (
             <ChoiceButton
               key={item}
               selected={selected}
@@ -69,18 +62,13 @@ const Message = (props: Props) => {
               choice_id={index}
               text={item}
               depth={props.depth}
-              curDepth={props.curDepth}
-              setTo={props.setTo}
-              setRole={props.setRole}
-              nextDepth={props.nextDepth}
-              updateList={props.updateList}
             ></ChoiceButton>
           ))
         ) : (
           <></>
         )}
         {props.depth === 3 ? (
-          question[props.role][3][props.to].map((item, index) => (
+          question[role][3][to].map((item, index) => (
             <ChoiceButton
               key={item}
               selected={selected}
@@ -88,11 +76,6 @@ const Message = (props: Props) => {
               choice_id={index}
               text={item}
               depth={props.depth}
-              curDepth={props.curDepth}
-              setTo={props.setTo}
-              setRole={props.setRole}
-              nextDepth={props.nextDepth}
-              updateList={props.updateList}
             ></ChoiceButton>
           ))
         ) : (
