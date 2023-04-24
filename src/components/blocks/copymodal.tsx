@@ -1,80 +1,31 @@
-import styled from "styled-components";
+import React from "react";
+import * as CM from "@styles/copymodal";
+import copyImage from "@assets/images/copyimage.png";
+import { useRecoilState } from "recoil";
+import { copyModalState, copyModalisFirst } from "atoms/modalstates";
 
-export const ModalBackground = styled.div`
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  background: rgba(0, 0, 0, 0.3);
-  left: 0rem;
-  top: 0rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2;
-`;
+const CopyModal = () => {
+  const [, setCopyModal] = useRecoilState(copyModalState);
+  const [, setCopyFirst] = useRecoilState(copyModalisFirst);
+  const copyModalHander = () => {
+    setCopyModal(false);
+    setCopyFirst(false);
+  };
+  return (
+    <CM.ModalBackground>
+      <CM.ModalWrapper>
+        <CM.ModalCopyImg src={copyImage} alt="" />
+        <CM.ModalCopyText>
+          클립보드에 복사되었습니다!
+          <br />
+          성공적인 글쓰기를 응원해요
+        </CM.ModalCopyText>
+        <CM.ModalCloseButton onClick={copyModalHander}>
+          확인
+        </CM.ModalCloseButton>
+      </CM.ModalWrapper>
+    </CM.ModalBackground>
+  );
+};
 
-export const ModalWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  // justify-content: center;
-  align-items: center;
-  width: 600rem;
-  height: 350rem;
-  background: #ffffff;
-  box-shadow: 5rem 5rem 30rem rgba(0, 0, 0, 0.3);
-  border-radius: 15rem;
-`;
-
-export const ModalCopyImg = styled.img`
-  width: 133.59rem;
-  height: 110rem;
-  margin-top: 56rem;
-  margin-bottom: 20rem;
-`;
-
-export const ModalCopyText = styled.span`
-  width: 206rem;
-  height: 46rem;
-  font-family: "AppleSDGothicNeoB00";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16rem;
-  line-height: 23rem;
-  /* or 144% */
-
-  text-align: center;
-
-  /* GRAY 03 */
-
-  color: #424242;
-  margin-bottom: 20rem;
-`;
-
-export const ModalCloseButton = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  width: 155rem;
-  height: 45rem;
-
-  /* SUB COLOR 02 */
-
-  background: #3a79e3;
-  border-radius: 10rem;
-
-  font-family: "AppleSDGothicNeoB00";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16rem;
-  line-height: 23rem;
-  /* identical to box height, or 144% */
-
-  text-align: center;
-
-  /* GRAY 00 */
-
-  color: #ffffff;
-  cursor: pointer;
-`;
+export default CopyModal;
