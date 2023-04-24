@@ -15,10 +15,8 @@ interface DataType {
 }
 
 interface Props {
-  name: string;
   question: string;
   depth: number;
-  isSystem: boolean;
 }
 
 const Message = (props: Props) => {
@@ -30,10 +28,7 @@ const Message = (props: Props) => {
   const question: DataType = questions;
 
   return (
-    <MessageWrapper
-      isSystem={props.isSystem}
-      opacity={curDepth === props.depth ? 1 : 0.5}
-    >
+    <MessageWrapper opacity={curDepth === props.depth ? 1 : 0.5}>
       <ProfileImageBox>
         <SystemImg src={SystemThumb} alt="" />
       </ProfileImageBox>
@@ -89,25 +84,16 @@ const Message = (props: Props) => {
 
 interface OpacityProps {
   opacity: number;
-  isSystem: boolean;
 }
 const MessageWrapper = styled.div<OpacityProps>`
   box-sizing: border-box;
   display: flex;
-
-  // min-width: 500rem;
-  // width: 917rem;
   height: 90rem;
-
-  // background: #838383;
   border: 1.2rem solid #838383;
   border-radius: 15rem;
   margin: 0 auto;
   margin-top: 50rem;
-  ${(props) =>
-    props.isSystem === true ? "margin-left: 0rem;" : "margin-right: 0rem;"}
-
-  // transform: translate(50%, 0);
+  margin-left: 0rem;
   opacity: ${(props) => props.opacity};
 `;
 

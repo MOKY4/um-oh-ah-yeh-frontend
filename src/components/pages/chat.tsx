@@ -22,14 +22,13 @@ import gptloading from "@assets/images/gptloading.gif";
 import gptloadingalt from "@assets/images/gptloadingalt.png";
 import gpterror from "@assets/images/gpterror.png";
 import responseloadinggif from "@assets/images/responsegif.gif";
-import { choiceListState, depthState, toState } from "atoms/messagestates";
+import { choiceListState, depthState } from "atoms/messagestates";
 import AlertModal from "@blocks/alertmodal";
 import CopyModal from "@blocks/copymodal";
 
 const Chat = () => {
   const [curDepth] = useRecoilState(depthState);
   const [choiceList] = useRecoilState(choiceListState);
-  const [to] = useRecoilState(toState);
   const [isAlertModalOn] = useRecoilState(alertModal);
   const [isCopyModalOn] = useRecoilState(copyModalState);
   const [isCopyFirst] = useRecoilState(copyModalisFirst);
@@ -41,6 +40,11 @@ const Chat = () => {
 
   const webSocketUrl = process.env.REACT_APP_API_ENDPOINT!;
   let ws = useRef<WebSocket | null>(null);
+  const questionList = [
+    "당신은 누구인가요?",
+    "누구에게 레터를 작성하나요?",
+    "어떤 상황의 글을 작성하나요?",
+  ];
 
   useEffect(() => {
     if (!ws.current) {
@@ -191,84 +195,41 @@ const Chat = () => {
       <MainWrapper>
         <ChatWrapper>
           <ResponseWrapper id="questions">
-            {curDepth >= 1 ? (
-              <Message
-                name="음"
-                question="당신은 누구인가요?"
-                depth={1}
-                isSystem={true}
-              />
-            ) : (
-              <></>
+            {questionList.map(
+              (question, index) =>
+                curDepth >= index + 1 && (
+                  <Message question={question} depth={index + 1} />
+                )
             )}
-            {curDepth >= 2 ? (
-              <Message
-                name="음"
-                question="누구에게 레터를 작성하나요?"
-                depth={2}
-                isSystem={true}
-              />
-            ) : (
-              <></>
-            )}
-            {curDepth >= 3 && to !== -1 ? (
+
+            {curDepth >= 4 && (
               <>
-                <Message
-                  name="음"
-                  question="어떤 상황의 글을 작성하나요?"
-                  depth={3}
-                  isSystem={true}
-                />
-              </>
-            ) : (
-              <></>
-            )}
-            {curDepth >= 4 ? (
-              <>
-                {responses ? (
+                {responses &&
                   responses.map((item, index) =>
                     index % 2 === 1 ? (
                       <div key={item}>
                         <ResponseMessage text={item} responseID={index} />
-                        {responses.length === 1 ? (
+                        {responses.length === 1 && (
                           <PostResponseImg src={PostResponse} alt="" />
-                        ) : (
-                          <></>
                         )}
                       </div>
-                    ) : index === 0 ? (
-                      <></>
                     ) : (
-                      <UserRequest text={item} />
+                      index !== 0 && <UserRequest text={item} />
                     )
-                  )
-                ) : (
-                  <></>
-                )}
-
-                {responses ? (
-                  responses.length % 2 === 1 ? (
-                    <>
-                      <LoadingWrapper>
-                        <HeightBox height="100rem" />
-                        <Loading src={responseloadinggif} alt="" />
-                        <HeightBox height="17rem" />
-                        <LoadingText>
-                          umm.. 이 열심히 답변을 생성하고 있어요. 조금만
-                          기다려주세요!
-                        </LoadingText>
-                        <HeightBox height="100rem" />
-                      </LoadingWrapper>
-                    </>
-                  ) : (
-                    <></>
-                  )
-                ) : (
-                  <></>
+                  )}
+                {responses && responses.length % 2 === 1 && (
+                  <LoadingWrapper>
+                    <HeightBox height="100rem" />
+                    <Loading src={responseloadinggif} alt="" />
+                    <HeightBox height="17rem" />
+                    <LoadingText>
+                      umm.. 이 열심히 답변을 생성하고 있어요. 조금만
+                      기다려주세요!
+                    </LoadingText>
+                    <HeightBox height="100rem" />
+                  </LoadingWrapper>
                 )}
               </>
-            ) : (
-              <></>
             )}
           </ResponseWrapper>
           <InputReloadWrapper>
@@ -278,13 +239,10 @@ const Chat = () => {
             </ReloadButton>
             <InputWrapper>
               <ChoicesWrapper>
-                {choiceList ? (
+                {choiceList &&
                   choiceList.map((item) => (
                     <UserChoiceButton key={item} text={item} />
-                  ))
-                ) : (
-                  <></>
-                )}
+                  ))}
               </ChoicesWrapper>
               <HeightBox height="20rem" />
               <InputSendWrapper>
@@ -300,7 +258,6 @@ const Chat = () => {
                     readOnly
                   ></InputBox>
                 )}
-
                 <WidthBox width="35rem" />
                 <SendWrapper
                   rescount={responses.length}
@@ -316,8 +273,8 @@ const Chat = () => {
           </InputReloadWrapper>
         </ChatWrapper>
       </MainWrapper>
-      {isAlertModalOn ? <AlertModal /> : <></>}
-      {isCopyFirst && isCopyModalOn ? <CopyModal /> : <></>}
+      {isAlertModalOn && <AlertModal />}
+      {isCopyFirst && isCopyModalOn && <CopyModal />}
     </>
   );
 };
@@ -331,7 +288,6 @@ const HeaderLine = styled.div`
 
 const MainWrapper = styled.div`
   display: flex;
-  // height: 200rem;
   justify-content: center;
 `;
 
@@ -340,7 +296,6 @@ const ChatWrapper = styled.div`
   height: ${window.innerHeight - (80 / 1920) * window.innerWidth - 1}px;
   display: flex;
   flex-direction: column;
-  // align-item: center;
   justify-content: space-between;
 `;
 
@@ -360,8 +315,6 @@ const InputWrapper = styled.div`
   height: 199rem;
   width: 1270rem;
   background: #fdfdfd;
-  /* 2 */
-
   border: 1px solid #838383;
   border-radius: 20rem;
   margin: 0 auto;
@@ -381,9 +334,6 @@ const LoadingText = styled.span`
   font-weight: 400;
   font-size: 17rem;
   line-height: 22rem;
-
-  /* GRAY 02 */
-
   color: #838383;
 `;
 
@@ -410,25 +360,17 @@ const InputBox = styled.input`
   width: 970rem;
   height: 76rem;
   padding-left: 30rem;
-  /* GRAY 01 */
-
   background: #f0f0f0;
-  /* GRAY 02 */
-
   border: 1.2rem solid #838383;
   border-radius: 15rem;
   &:focus {
     outline: none;
   }
-
   font-family: "AppleSDGothicNeoM00";
   font-style: normal;
   font-weight: 400;
   font-size: 17rem;
   line-height: 22rem;
-
-  /* GRAY 03 */
-
   color: #424242;
 `;
 
@@ -440,41 +382,31 @@ interface SendType {
 const SendWrapper = styled.div<SendType>`
   width: 155rem;
   height: 50rem;
-
-  /* GRAY 01 */
   ${(props) =>
     props.curDepth > 3
       ? props.rescount % 2 === 0
         ? "background: #FF983B;cursor: pointer;"
         : "background: #F0F0F0;"
       : "background: #F0F0F0;"}
-
   border-radius: 10rem;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+
 const SendText = styled.span`
   font-family: "AppleSDGothicNeoB00";
   font-style: normal;
   font-weight: 400;
   font-size: 16rem;
   line-height: 23rem;
-  /* identical to box height, or 144% */
-
   text-align: center;
-
-  /* GRAY 00 */
-
   color: #ffffff;
 `;
-const SendImg = styled.img`
-  /* Icon shape */
 
+const SendImg = styled.img`
   width: 13rem;
   height: 13rem;
-
-  /* GRAY 00 */
 `;
 
 const ReloadButton = styled.div`
@@ -484,12 +416,8 @@ const ReloadButton = styled.div`
   align-items: center;
   padding: 5rem 10rem;
   gap: 5rem;
-
-  // position: absolute;
   width: 112rem;
   height: 36rem;
-  // left: 1479rem;
-  // top: 733rem;
   cursor: pointer;
   margin-top: 5rem;
   margin-bottom: -5rem;
@@ -507,8 +435,6 @@ const ReloadText = styled.span`
   font-weight: 400;
   font-size: 17rem;
   line-height: 23rem;
-  /* identical to box height, or 135% */
-
   color: #838383;
 `;
 
@@ -525,11 +451,13 @@ const PostResponseImg = styled.img`
   margin-top: 50rem;
   margin-bottom: 44rem;
 `;
+
 const GPTLoadingWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
 `;
+
 const GPTLoading = styled.img`
   width: 400rem;
   height: 377.36rem;
@@ -542,10 +470,6 @@ const GPTLoadingText = styled.span`
   font-weight: 400;
   font-size: 17rem;
   line-height: 22rem;
-  /* identical to box height */
-
-  /* GRAY 02 */
-
   color: #838383;
   margin: 0 auto;
 `;
@@ -568,10 +492,6 @@ const GPTErrorText = styled.span`
   font-weight: 400;
   font-size: 17rem;
   line-height: 22rem;
-  /* identical to box height */
-
-  /* GRAY 02 */
-
   color: #838383;
   margin: 0 auto;
 `;
