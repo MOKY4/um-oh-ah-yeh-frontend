@@ -3,7 +3,6 @@ import styled from "styled-components";
 import HeightBox from "@blocks/heightblock";
 import WidthBox from "@blocks/widthblock";
 import Message from "@blocks/message";
-import LoadingImg from "@assets/images/Loading.png";
 import { PageHeader, PageHeaderBack, Logo } from "@blocks/headers";
 import HeaderLogo from "@assets/images/logo.png";
 import { useNavigate } from "react-router-dom";
@@ -42,7 +41,6 @@ const Chat = () => {
   const [sendMsg, setSendMsg] = useState(false);
   const [countError, setError] = useState(false);
 
-  // dotenv.config();
   const webSocketUrl = process.env.REACT_APP_API_ENDPOINT!;
   let ws = useRef<WebSocket | null>(null);
 
@@ -50,18 +48,11 @@ const Chat = () => {
     if (!ws.current) {
       ws.current = new WebSocket(webSocketUrl);
       ws.current.onopen = () => {
-        // console.log("connected");
         setSocketConnected(true);
       };
-      ws.current.onclose = () => {
-        // console.log("connection closed");
-      };
+      ws.current.onclose = () => {};
     }
-
-    // return () => {
-    //   ws.current?.close();
-    // };
-  }, []);
+  }, [webSocketUrl]);
 
   useEffect(() => {
     if (socketConnected) {
@@ -89,7 +80,6 @@ const Chat = () => {
             }
           } else {
             setResponse((oldArray) => [...oldArray, e.data]);
-            // console.log(data);
           }
         };
       }
@@ -105,7 +95,6 @@ const Chat = () => {
             message: `나는 ${choiceList[0]}이고, ${choiceList[1]}에게, ${choiceList[2]}을 할거야`,
           })
         );
-        // console.log("First Request send");
       }
     }
   }, [curDepth, choiceList]);
@@ -113,7 +102,6 @@ const Chat = () => {
   useEffect(() => {
     var question_div = document.getElementById("questions");
     if (question_div) {
-      // question_div.scrollTop = question_div.scrollHeight;
       question_div.scrollTo({
         top: question_div.scrollHeight,
         behavior: "smooth",
@@ -141,7 +129,6 @@ const Chat = () => {
             message: curInput,
           })
         );
-        // console.log("message send");
       }
     }
   };
@@ -209,10 +196,8 @@ const Chat = () => {
       <PageHeaderBack></PageHeaderBack>
       <HeaderLine />
       <MainWrapper>
-        {/* <RecordWrapper></RecordWrapper> */}
         <ChatWrapper>
           <ResponseWrapper id="questions">
-            {/* <HeightBox height="400rem" /> */}
             {curDepth >= 1 ? (
               <Message
                 name="음"
@@ -271,17 +256,6 @@ const Chat = () => {
             )}
             {curDepth >= 4 ? (
               <>
-                {/* <HeightBox height="210rem" /> */}
-                {/* {responses.length === 1 ? (
-                  <LoadingWrapper>
-                    <HeightBox height="210rem" />
-                    <Loading src={LoadingImg} alt="" />
-                    <HeightBox height="210rem" />
-                  </LoadingWrapper>
-                ) : (
-                  <></>
-                )} */}
-
                 {responses ? (
                   responses.map((item, index) =>
                     index % 2 === 1 ? (
@@ -352,7 +326,10 @@ const Chat = () => {
                     onKeyPress={enterHandler}
                   ></InputBox>
                 ) : (
-                  <InputBox placeholder="3번의 질문에 응답한 후 더 구체적인 상황을 쓸 수 있어요"></InputBox>
+                  <InputBox
+                    placeholder="3가지 질문에 먼저 응답 후 쓸 수 있어요!"
+                    readOnly
+                  ></InputBox>
                 )}
 
                 <WidthBox width="35rem" />

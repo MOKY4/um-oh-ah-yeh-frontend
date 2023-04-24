@@ -1,10 +1,8 @@
-import React from "react";
 import styled from "styled-components";
 import Systemthumb from "@assets/images/SystemThumb.png";
 import CopyImage from "@assets/images/copy.png";
 import { useRecoilState } from "recoil";
 import { copyModalState } from "atoms/modalstates";
-import HeightBox from "./heightblock";
 
 interface ResponseProps {
   text: string;
@@ -12,7 +10,7 @@ interface ResponseProps {
 }
 
 const ResponseMessage = (props: ResponseProps) => {
-  const [isCopyModalOn, setCopyModal] = useRecoilState(copyModalState);
+  const [, setCopyModal] = useRecoilState(copyModalState);
   const CopyHandler = (id: string) => {
     var range = document.createRange();
     var copyText = document.getElementById(id);
