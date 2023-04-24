@@ -1,46 +1,14 @@
-# Getting Started with Create React App
+# ✏️ Um-oh-ah-yeh-frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+학생 및 사회 초년생을 위한 어려운 글 작성 솔루션 서비스 frontend with react for MS Azure-thon
 
-## Available Scripts
+### 📌 Production on [Link](https://um-oh-ah-yeh.vercel.app/)
+### 메인 화면
+![ezgif-4-1e2b5645fa](https://user-images.githubusercontent.com/86578246/233944143-fa272dd2-138d-46c1-881d-725d1aa432f1.gif)
 
-In the project directory, you can run:
+### 응답 화면
+![response](https://user-images.githubusercontent.com/86578246/233944493-dbebde6f-aff7-4ac3-81b8-176548069696.gif)
 
-### `yarn start`
+### 메시지 보내기
+![usermessage](https://user-images.githubusercontent.com/86578246/233944775-7fc10c5b-727c-42f4-97c8-a16d7232bcd5.gif)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
