@@ -1,7 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
 import { alertModal } from "atoms/modalstates";
+import { useRecoilState } from "recoil";
+import {
+  choiceListState,
+  depthState,
+  roleState,
+  toState,
+} from "atoms/messagestates";
 
 interface Props {
   selected: number;
@@ -9,26 +15,26 @@ interface Props {
   text: string;
   choice_id: number;
   depth: number;
-  curDepth: number;
-  setTo: React.Dispatch<React.SetStateAction<number>>;
-  setRole: React.Dispatch<React.SetStateAction<number>>;
-  nextDepth: React.Dispatch<React.SetStateAction<number>>;
-  updateList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const ChoiceButton = (props: Props) => {
   const [, setAlertModal] = useRecoilState(alertModal);
+  const [curDepth, nextDepth] = useRecoilState(depthState);
+  const [, updateList] = useRecoilState(choiceListState);
+  const [, setRole] = useRecoilState(roleState);
+  const [, setTo] = useRecoilState(toState);
+
   const onClickHandler = () => {
-    if (props.depth === props.curDepth) {
+    if (props.depth === curDepth) {
       if (props.depth === 1) {
-        props.setRole(props.choice_id);
+        setRole(props.choice_id);
       }
       if (props.depth === 2) {
-        props.setTo(props.choice_id);
+        setTo(props.choice_id);
       }
       props.setChoice(props.choice_id);
-      props.nextDepth(props.depth + 1);
-      props.updateList((oldArray) => [...oldArray, props.text]);
+      nextDepth(props.depth + 1);
+      updateList((oldArray) => [...oldArray, props.text]);
     } else {
       setAlertModal(true);
     }

@@ -26,18 +26,19 @@ import gptloading from "@assets/images/gptloading.gif";
 import gptloadingalt from "@assets/images/gptloadingalt.png";
 import gpterror from "@assets/images/gpterror.png";
 import responseloadinggif from "@assets/images/responsegif.gif";
+import { choiceListState, depthState, toState } from "atoms/messagestates";
 
 const Chat = () => {
-  const [curDepth, nextDepth] = useState(1);
-  const [choiceList, updateList] = useState<string[]>([]);
-  const [role, setRole] = useState(0);
-  const [to, setTo] = useState(-1);
-  const [responses, setResponse] = useState<string[]>([]);
-  const [curInput, setInput] = useState("");
+  const [curDepth] = useRecoilState(depthState);
+  const [choiceList] = useRecoilState(choiceListState);
+  const [to] = useRecoilState(toState);
   const [isAlertModalOn, setAlertModal] = useRecoilState(alertModal);
   const [isCopyModalOn, setCopyModal] = useRecoilState(copyModalState);
   const [isCopyFirst, setCopyFirst] = useRecoilState(copyModalisFirst);
+
   const [socketConnected, setSocketConnected] = useState(false);
+  const [responses, setResponse] = useState<string[]>([]);
+  const [curInput, setInput] = useState("");
   const [sendMsg, setSendMsg] = useState(false);
   const [countError, setError] = useState(false);
 
@@ -74,7 +75,6 @@ const Chat = () => {
         ws.current.onmessage = (e: MessageEvent) => {
           const data = e.data;
           if (data[0] === "{" && data[data.length - 1] === "}") {
-            // console.log("에러났다!");
             if (data.includes("Internal server error")) {
               setError(true);
             }
@@ -203,15 +203,7 @@ const Chat = () => {
                 name="음"
                 question="당신은 누구인가요?"
                 depth={1}
-                role={role}
-                curDepth={curDepth}
                 isSystem={true}
-                choiceList={choiceList}
-                to={to}
-                setTo={setTo}
-                setRole={setRole}
-                nextDepth={nextDepth}
-                updateList={updateList}
               />
             ) : (
               <></>
@@ -221,15 +213,7 @@ const Chat = () => {
                 name="음"
                 question="누구에게 레터를 작성하나요?"
                 depth={2}
-                role={role}
-                curDepth={curDepth}
                 isSystem={true}
-                choiceList={choiceList}
-                to={to}
-                setTo={setTo}
-                setRole={setRole}
-                nextDepth={nextDepth}
-                updateList={updateList}
               />
             ) : (
               <></>
@@ -240,15 +224,7 @@ const Chat = () => {
                   name="음"
                   question="어떤 상황의 글을 작성하나요?"
                   depth={3}
-                  role={role}
-                  curDepth={curDepth}
                   isSystem={true}
-                  choiceList={choiceList}
-                  to={to}
-                  setTo={setTo}
-                  setRole={setRole}
-                  nextDepth={nextDepth}
-                  updateList={updateList}
                 />
               </>
             ) : (
