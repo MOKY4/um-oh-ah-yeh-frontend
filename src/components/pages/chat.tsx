@@ -326,7 +326,10 @@ const Chat = () => {
                     onKeyPress={enterHandler}
                   ></InputBox>
                 ) : (
-                  <InputBox placeholder="3번의 질문에 응답한 후 더 구체적인 상황을 쓸 수 있어요"></InputBox>
+                  <InputBox
+                    placeholder="3가지 질문에 먼저 응답 후 쓸 수 있어요!"
+                    readOnly
+                  ></InputBox>
                 )}
 
                 <WidthBox width="35rem" />
