@@ -3,7 +3,7 @@ import styled from "styled-components";
 import HeightBox from "@blocks/heightblock";
 import WidthBox from "@blocks/widthblock";
 import Message from "@blocks/message";
-import { PageHeader, PageHeaderBack, Logo } from "@blocks/headers";
+import { PageHeader, PageHeaderBack, Logo } from "@styles/headers";
 import HeaderLogo from "@assets/images/logo.png";
 import { useNavigate } from "react-router-dom";
 import UserChoiceButton from "@blocks/userchoicebutton";
@@ -18,24 +18,21 @@ import {
   copyModalState,
   copyModalisFirst,
 } from "atoms/modalstates";
-import AlertImg from "@assets/images/alertimage.png";
-import * as AM from "@components/blocks/alertmodal";
-import * as CM from "@components/blocks/copymodal";
-import copyImage from "@assets/images/copyimage.png";
 import gptloading from "@assets/images/gptloading.gif";
 import gptloadingalt from "@assets/images/gptloadingalt.png";
 import gpterror from "@assets/images/gpterror.png";
 import responseloadinggif from "@assets/images/responsegif.gif";
 import { choiceListState, depthState, toState } from "atoms/messagestates";
+import AlertModal from "@blocks/alertmodal";
+import CopyModal from "@blocks/copymodal";
 
 const Chat = () => {
   const [curDepth] = useRecoilState(depthState);
   const [choiceList] = useRecoilState(choiceListState);
   const [to] = useRecoilState(toState);
-  const [isAlertModalOn, setAlertModal] = useRecoilState(alertModal);
-  const [isCopyModalOn, setCopyModal] = useRecoilState(copyModalState);
-  const [isCopyFirst, setCopyFirst] = useRecoilState(copyModalisFirst);
-
+  const [isAlertModalOn] = useRecoilState(alertModal);
+  const [isCopyModalOn] = useRecoilState(copyModalState);
+  const [isCopyFirst] = useRecoilState(copyModalisFirst);
   const [socketConnected, setSocketConnected] = useState(false);
   const [responses, setResponse] = useState<string[]>([]);
   const [curInput, setInput] = useState("");
@@ -53,6 +50,9 @@ const Chat = () => {
       };
       ws.current.onclose = () => {};
     }
+    return () => {
+      ws.current?.close();
+    };
   }, [webSocketUrl]);
 
   useEffect(() => {
@@ -143,13 +143,6 @@ const Chat = () => {
     if (e.key === "Enter") {
       SendHandler();
     }
-  };
-  const alertModalHander = () => {
-    setAlertModal(false);
-  };
-  const copyModalHander = () => {
-    setCopyModal(false);
-    setCopyFirst(false);
   };
 
   if (countError) {
@@ -323,41 +316,8 @@ const Chat = () => {
           </InputReloadWrapper>
         </ChatWrapper>
       </MainWrapper>
-      {isAlertModalOn ? (
-        <AM.ModalBackground>
-          <AM.ModalWrapper>
-            <AM.ModalAlertImg src={AlertImg} alt="" />
-            <AM.ModalAlertText>
-              한 번 고른 항목은 바꿀 수 없어요
-              <br />
-              <AM.BlueText>다시하기</AM.BlueText>를 눌러주세요!
-            </AM.ModalAlertText>
-            <AM.ModalCloseButton onClick={alertModalHander}>
-              확인
-            </AM.ModalCloseButton>
-          </AM.ModalWrapper>
-        </AM.ModalBackground>
-      ) : (
-        <></>
-      )}
-
-      {isCopyFirst && isCopyModalOn ? (
-        <CM.ModalBackground>
-          <CM.ModalWrapper>
-            <CM.ModalCopyImg src={copyImage} alt="" />
-            <CM.ModalCopyText>
-              클립보드에 복사되었습니다!
-              <br />
-              성공적인 글쓰기를 응원해요
-            </CM.ModalCopyText>
-            <CM.ModalCloseButton onClick={copyModalHander}>
-              확인
-            </CM.ModalCloseButton>
-          </CM.ModalWrapper>
-        </CM.ModalBackground>
-      ) : (
-        <></>
-      )}
+      {isAlertModalOn ? <AlertModal /> : <></>}
+      {isCopyFirst && isCopyModalOn ? <CopyModal /> : <></>}
     </>
   );
 };
