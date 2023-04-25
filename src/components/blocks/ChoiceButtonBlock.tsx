@@ -7,7 +7,7 @@ import {
   depthState,
   roleState,
   toState,
-} from "atoms/MessageStates";
+} from "atoms/messagestates";
 
 interface Props {
   selected: number;
