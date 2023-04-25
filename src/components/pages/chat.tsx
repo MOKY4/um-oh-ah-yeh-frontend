@@ -12,6 +12,9 @@ import CopyModal from "@blocks/copymodal";
 import GPTLoading from "@blocks/gptloding";
 import GPTError from "@blocks/gpterror";
 import ChatHeader from "@blocks/chatheader";
+import ResponseLoading from "@blocks/responseloading";
+import SendButton from "@blocks/sendbutton";
+import ReloadButton from "@blocks/reloadbutton";
 
 import { useRecoilState } from "recoil";
 import {
@@ -20,11 +23,6 @@ import {
   copyModalisFirst,
 } from "atoms/modalstates";
 import { choiceListState, depthState } from "atoms/messagestates";
-
-import PostResponse from "@assets/images/postresponse.png";
-import ReloadImage from "@assets/images/reload.png";
-import ResponseLoading from "@blocks/responseloading";
-import SendButton from "@blocks/sendbutton";
 
 const Chat = () => {
   const [curDepth] = useRecoilState(depthState);
@@ -35,7 +33,7 @@ const Chat = () => {
   const [responses, setResponse] = useState<string[]>([]);
   const [curInput, setInput] = useState("");
   const [sendMsg, setSendMsg] = useState(false);
-  const [countError, setError] = useState(false);
+  const [onError, setError] = useState(false);
   const [socketConnected, setSocketConnected] = useState(false);
 
   const webSocketUrl = process.env.REACT_APP_API_ENDPOINT!;
@@ -113,11 +111,6 @@ const Chat = () => {
     }
   }, [curDepth, choiceList, responses]);
 
-  const ReloadHandler = () => {
-    ws.current?.close();
-    window.location.reload();
-  };
-
   const SendHandler = () => {
     if (curDepth > 3 && curInput.length !== 0 && responses.length % 2 !== 1) {
       setResponse((oldArray) => [...oldArray, curInput]);
@@ -145,7 +138,7 @@ const Chat = () => {
     }
   };
 
-  if (countError) {
+  if (onError) {
     return (
       <>
         <ChatHeader />
@@ -182,12 +175,11 @@ const Chat = () => {
                 {responses &&
                   responses.map((item, index) =>
                     index % 2 === 1 ? (
-                      <div key={item}>
-                        <ResponseMessage text={item} responseID={index} />
-                        {responses.length === 1 && (
-                          <PostResponseImg src={PostResponse} alt="" />
-                        )}
-                      </div>
+                      <ResponseMessage
+                        key={item}
+                        text={item}
+                        responseID={index}
+                      />
                     ) : (
                       index !== 0 && <UserRequest text={item} />
                     )
@@ -197,10 +189,7 @@ const Chat = () => {
             )}
           </ResponseWrapper>
           <InputReloadWrapper>
-            <ReloadButton onClick={ReloadHandler}>
-              <ReloadImg src={ReloadImage} alt=""></ReloadImg>
-              <ReloadText>다시하기</ReloadText>
-            </ReloadButton>
+            <ReloadButton />
             <InputWrapper>
               <ChoicesWrapper>
                 {choiceList &&
@@ -309,45 +298,8 @@ const InputBox = styled.input`
   color: #424242;
 `;
 
-const ReloadButton = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 5rem 10rem;
-  gap: 5rem;
-  width: 112rem;
-  height: 36rem;
-  cursor: pointer;
-  margin-top: 5rem;
-  margin-bottom: -5rem;
-  transform: translate(5%, 0);
-`;
-
-const ReloadImg = styled.img`
-  width: 24rem;
-  height: 24rem;
-`;
-
-const ReloadText = styled.span`
-  font-family: "AppleSDGothicNeoB00";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 17rem;
-  line-height: 23rem;
-  color: #838383;
-`;
-
 const InputReloadWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-`;
-
-const PostResponseImg = styled.img`
-  width: 311rem;
-  height: 151.57rem;
-  margin: 0 auto;
-  margin-top: 50rem;
-  margin-bottom: 44rem;
 `;
