@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import responseloadinggif from "@assets/images/responsegif.gif";
-import HeightBox from "./heightblock";
+import HeightBox from "./HeightBlock";
 
 const ResponseLoading = () => {
   return (

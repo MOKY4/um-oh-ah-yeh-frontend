@@ -1,4 +1,4 @@
-import { PageHeader, PageHeaderBack, Logo } from "@styles/headers";
+import { PageHeader, PageHeaderBack, Logo } from "@styles/HeadersStyle";
 import HeaderLogo from "@assets/images/logo.png";
 import { useNavigate } from "react-router-dom";
 

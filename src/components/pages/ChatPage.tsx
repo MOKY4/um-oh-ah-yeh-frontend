@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import HeightBox from "@blocks/heightblock";
-import WidthBox from "@blocks/widthblock";
-import Message from "@blocks/message";
-import ResponseMessage from "@blocks/response";
-import UserRequest from "@blocks/userrequest";
-import AlertModal from "@blocks/alertmodal";
-import CopyModal from "@blocks/copymodal";
-import GPTLoading from "@blocks/gptloding";
-import GPTError from "@blocks/gpterror";
-import ChatHeader from "@blocks/chatheader";
-import ResponseLoading from "@blocks/responseloading";
-import SendButton from "@blocks/sendbutton";
-import ReloadButton from "@blocks/reloadbutton";
-import UserChoiceList from "@blocks/userchoicelist";
+import HeightBox from "@blocks/HeightBlock";
+import WidthBox from "@blocks/WidthBlock";
+import Message from "@blocks/MessageBlock";
+import ResponseMessage from "@blocks/ResponseBlock";
+import UserRequest from "@blocks/UserRequestBlock";
+import AlertModal from "@blocks/AlertModalBlock";
+import CopyModal from "@blocks/CopyModalBlock";
+import GPTLoading from "@blocks/GPTLoadingBlock";
+import GPTError from "@blocks/GPTErrorBlock";
+import ChatHeader from "@blocks/ChatHeaderBlock";
+import ResponseLoading from "@blocks/ResponseLoadingBlock";
+import SendButton from "@blocks/SendButtonBlock";
+import ReloadButton from "@blocks/ReloadButtonBlock";
+import UserChoiceList from "@blocks/UserChoiceListBlock";
 
 import { useRecoilState } from "recoil";
 import {

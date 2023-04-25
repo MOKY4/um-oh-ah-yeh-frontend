@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import MainLogo from "@assets/images/MainLogo.png";
-import HeightBox from "@blocks/heightblock";
-import WidthBox from "@blocks/widthblock";
+import HeightBox from "@blocks/HeightBlock";
+import WidthBox from "@blocks/WidthBlock";
 import ummImage from "@assets/images/ummImage.png";
 import SecondDescIMG1 from "@assets/images/SecondDesc1.png";
 import SecondDescIMG2 from "@assets/images/SecondDesc2.png";
 import FooterLogo from "@assets/images/footerlogo.png";
 import githubimg from "@assets/images/githublogo.png";
 import mobilemain from "@assets/images/mobilemain.png";
-import Header from "@blocks/header";
+import Header from "@blocks/HeaderBlock";
 
 const Main = () => {
   const navigate = useNavigate();

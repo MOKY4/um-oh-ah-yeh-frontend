@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import SendLogo from "@assets/images/SendImg.png";
-import WidthBox from "./widthblock";
+import WidthBox from "./WidthBlock";
 
 interface ISendHandler {
   (): void;

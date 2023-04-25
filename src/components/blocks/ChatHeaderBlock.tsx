@@ -1,4 +1,4 @@
-import Header from "./header";
+import Header from "./HeaderBlock";
 import styled from "styled-components";
 
 const ChatHeader = () => {

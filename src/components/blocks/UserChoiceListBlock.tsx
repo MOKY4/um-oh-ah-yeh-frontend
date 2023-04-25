@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { choiceListState } from "atoms/messagestates";
 import styled from "styled-components";
-import UserChoiceButton from "./userchoicebutton";
+import UserChoiceButton from "./UserChoiceButtonBlock";
 
 const UserChoiceList = () => {
   const [choiceList] = useRecoilState(choiceListState);
