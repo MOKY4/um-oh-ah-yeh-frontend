@@ -4,7 +4,6 @@ import styled from "styled-components";
 import HeightBox from "@blocks/heightblock";
 import WidthBox from "@blocks/widthblock";
 import Message from "@blocks/message";
-import UserChoiceButton from "@blocks/userchoicebutton";
 import ResponseMessage from "@blocks/response";
 import UserRequest from "@blocks/userrequest";
 import AlertModal from "@blocks/alertmodal";
@@ -15,6 +14,7 @@ import ChatHeader from "@blocks/chatheader";
 import ResponseLoading from "@blocks/responseloading";
 import SendButton from "@blocks/sendbutton";
 import ReloadButton from "@blocks/reloadbutton";
+import UserChoiceList from "@blocks/userchoicelist";
 
 import { useRecoilState } from "recoil";
 import {
@@ -191,12 +191,7 @@ const Chat = () => {
           <InputReloadWrapper>
             <ReloadButton />
             <InputWrapper>
-              <ChoicesWrapper>
-                {choiceList &&
-                  choiceList.map((item) => (
-                    <UserChoiceButton key={item} text={item} />
-                  ))}
-              </ChoicesWrapper>
+              <UserChoiceList />
               <HeightBox height="20rem" />
               <InputSendWrapper>
                 {curDepth > 3 ? (
@@ -265,13 +260,6 @@ const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 50rem;
-`;
-
-const ChoicesWrapper = styled.div`
-  display: flex;
-  height: 33rem;
-  margin-top: 31.5rem;
-  margin-left: 30rem;
 `;
 
 const InputSendWrapper = styled.div`
