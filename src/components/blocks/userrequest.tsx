@@ -22,8 +22,6 @@ const MainWrapper = styled.div`
   width: 1267rem;
   height: 114rem;
   background: #ffe1c6;
-  /* SUB COLOR 05 */
-
   border: 1.2rem solid #ff983b;
   border-radius: 15rem;
   margin-top: 50rem;
@@ -45,11 +43,7 @@ const ResponseText = styled.span`
     font-weight: 400;
     font-size: 17rem;
     line-height: 32rem;
-    /* or 188% */
-
     text-align: left;
-    /* GRAY 03 */
-
     color: #424242;
 `;
 

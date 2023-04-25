@@ -19,6 +19,10 @@ interface Props {
   depth: number;
 }
 
+interface OpacityProps {
+  opacity: number;
+}
+
 const Message = (props: Props) => {
   const [curDepth] = useRecoilState(depthState);
   const [role] = useRecoilState(roleState);
@@ -82,9 +86,6 @@ const Message = (props: Props) => {
   );
 };
 
-interface OpacityProps {
-  opacity: number;
-}
 const MessageWrapper = styled.div<OpacityProps>`
   box-sizing: border-box;
   display: flex;
