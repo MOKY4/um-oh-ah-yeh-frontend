@@ -23,8 +23,8 @@ import { choiceListState, depthState } from "atoms/messagestates";
 
 import PostResponse from "@assets/images/postresponse.png";
 import ReloadImage from "@assets/images/reload.png";
-import SendLogo from "@assets/images/SendImg.png";
-import responseloadinggif from "@assets/images/responsegif.gif";
+import ResponseLoading from "@blocks/responseloading";
+import SendButton from "@blocks/sendbutton";
 
 const Chat = () => {
   const [curDepth] = useRecoilState(depthState);
@@ -177,7 +177,6 @@ const Chat = () => {
                   <Message question={question} depth={index + 1} />
                 )
             )}
-
             {curDepth >= 4 && (
               <>
                 {responses &&
@@ -193,18 +192,7 @@ const Chat = () => {
                       index !== 0 && <UserRequest text={item} />
                     )
                   )}
-                {responses && responses.length % 2 === 1 && (
-                  <LoadingWrapper>
-                    <HeightBox height="100rem" />
-                    <Loading src={responseloadinggif} alt="" />
-                    <HeightBox height="17rem" />
-                    <LoadingText>
-                      umm.. 이 열심히 답변을 생성하고 있어요. 조금만
-                      기다려주세요!
-                    </LoadingText>
-                    <HeightBox height="100rem" />
-                  </LoadingWrapper>
-                )}
+                {responses && responses.length % 2 === 1 && <ResponseLoading />}
               </>
             )}
           </ResponseWrapper>
@@ -235,15 +223,11 @@ const Chat = () => {
                   ></InputBox>
                 )}
                 <WidthBox width="35rem" />
-                <SendWrapper
-                  rescount={responses.length}
+                <SendButton
+                  len={responses.length}
                   curDepth={curDepth}
-                  onClick={SendHandler}
-                >
-                  <SendText>보내기</SendText>
-                  <WidthBox width="10rem" />
-                  <SendImg src={SendLogo} alt=""></SendImg>
-                </SendWrapper>
+                  SendHandler={SendHandler}
+                />
               </InputSendWrapper>
             </InputWrapper>
           </InputReloadWrapper>
@@ -294,26 +278,6 @@ const InputWrapper = styled.div`
   margin-bottom: 50rem;
 `;
 
-const Loading = styled.img`
-  width: 131.22rem;
-  height: 60rem;
-`;
-
-const LoadingText = styled.span`
-  font-family: "AppleSDGothicNeoM00";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 17rem;
-  line-height: 22rem;
-  color: #838383;
-`;
-
-const LoadingWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const ChoicesWrapper = styled.div`
   display: flex;
   height: 33rem;
@@ -343,41 +307,6 @@ const InputBox = styled.input`
   font-size: 17rem;
   line-height: 22rem;
   color: #424242;
-`;
-
-interface SendType {
-  curDepth: number;
-  rescount: number;
-}
-
-const SendWrapper = styled.div<SendType>`
-  width: 155rem;
-  height: 50rem;
-  ${(props) =>
-    props.curDepth > 3
-      ? props.rescount % 2 === 0
-        ? "background: #FF983B;cursor: pointer;"
-        : "background: #F0F0F0;"
-      : "background: #F0F0F0;"}
-  border-radius: 10rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const SendText = styled.span`
-  font-family: "AppleSDGothicNeoB00";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16rem;
-  line-height: 23rem;
-  text-align: center;
-  color: #ffffff;
-`;
-
-const SendImg = styled.img`
-  width: 13rem;
-  height: 13rem;
 `;
 
 const ReloadButton = styled.div`
