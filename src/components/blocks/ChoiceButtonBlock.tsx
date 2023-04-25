@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { alertModal } from "atoms/ModalStates";
+import { alertModal } from "atoms/modalstates";
 import { useRecoilState } from "recoil";
 import {
   choiceListState,

@@ -2,7 +2,7 @@ import React from "react";
 import * as CM from "@styles/CopyModalStyle";
 import copyImage from "@assets/images/copyimage.png";
 import { useRecoilState } from "recoil";
-import { copyModalState, copyModalisFirst } from "atoms/ModalStates";
+import { copyModalState, copyModalisFirst } from "atoms/modalstates";
 
 const CopyModal = () => {
   const [, setCopyModal] = useRecoilState(copyModalState);

@@ -21,7 +21,7 @@ import {
   alertModal,
   copyModalState,
   copyModalisFirst,
-} from "atoms/ModalStates";
+} from "atoms/modalstates";
 import { choiceListState, depthState } from "atoms/MessageStates";
 
 const Chat = () => {

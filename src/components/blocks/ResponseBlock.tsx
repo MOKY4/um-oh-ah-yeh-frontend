@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Systemthumb from "@assets/images/SystemThumb.png";
 import CopyImage from "@assets/images/copy.png";
 import { useRecoilState } from "recoil";
-import { copyModalState } from "atoms/ModalStates";
+import { copyModalState } from "atoms/modalstates";
 
 interface ResponseProps {
   text: string;
