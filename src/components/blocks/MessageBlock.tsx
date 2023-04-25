@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ChoiceButton from "./ChoiceButtonBlocl";
+import ChoiceButton from "./ChoiceButtonBlock";
 import questions from "@assets/data/questions.json";
 import SystemThumb from "@assets/images/SystemThumb.png";
 import WidthBox from "./WidthBlock";
