@@ -52,31 +52,20 @@ const NotChoiced = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 5rem 20rem;
-
-  // width: 100rem;
   height: 32rem;
-
   background: #f0f0f0;
   border: 1.3rem solid #f0f0f0;
   border-radius: 10rem;
-
-  /* Inside auto layout */
-
   flex: none;
   order: 0;
   flex-grow: 0;
-
   font-family: "AppleSDGothicNeoB00";
   font-style: normal;
   font-weight: 400;
   font-size: 16rem;
   line-height: 22rem;
   text-align: center;
-
-  /* 1 */
-
   color: #424242;
   margin-right: 20rem;
 `;
@@ -85,31 +74,19 @@ const Choiced = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 5rem 20rem;
-
-  // width: 100rem;
-  // height: 32rem;
-
   background: #cce1ff;
   border: 1.3rem solid #3a79e3;
   border-radius: 10rem;
-
-  /* Inside auto layout */
-
   flex: none;
   order: 0;
   flex-grow: 0;
-
   font-family: "AppleSDGothicNeoB00";
   font-style: normal;
   font-weight: 400;
   font-size: 16rem;
   line-height: 22rem;
   text-align: center;
-
-  /* 1 */
-
   color: #424242;
   margin-right: 20rem;
 `;

@@ -51,8 +51,6 @@ const MainWrapper = styled.div`
   justify-content: center;
   align-items: center;
   background: #cce1ff;
-  /* SUB COLOR 02 */
-
   border: 1.5rem solid #3a79e3;
   border-radius: 15rem;
   margin-top: 50rem;
@@ -62,14 +60,13 @@ const ResponseWrapper = styled.div`
   display: flex;
   width: 1170rem;
   align-items: center;
-  // min-height: 200rem;
 `;
 
 const ProfileWrapper = styled.div`
   display: flex;
-  // align-items: center;
   margin-top: 35rem;
 `;
+
 const ProfileThumb = styled.img`
   width: 40rem;
   height: 40rem;
@@ -82,14 +79,9 @@ const ResponseText = styled.span`
   font-weight: 400;
   font-size: 17rem;
   line-height: 32rem;
-  /* or 188% */
-
-  /* GRAY 03 */
-
   color: #424242;
   text-align: left;
   word-break: keep-all;
-  // margin-top: 35rem;
   margin-bottom: 30rem;
   white-space: pre-line;
 `;

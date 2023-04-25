@@ -7,6 +7,7 @@ export const PageHeader = styled.div`
   width: 100%;
   z-index: 1;
 `;
+
 export const PageHeaderBack = styled.div`
   background: white;
   height: 80rem;

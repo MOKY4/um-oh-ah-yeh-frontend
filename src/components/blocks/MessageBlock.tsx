@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ChoiceButton from "./choicebutton";
+import ChoiceButton from "./ChoiceButtonBlock";
 import questions from "@assets/data/questions.json";
 import SystemThumb from "@assets/images/SystemThumb.png";
 import WidthBox from "./widthblock";
@@ -17,6 +17,10 @@ interface DataType {
 interface Props {
   question: string;
   depth: number;
+}
+
+interface OpacityProps {
+  opacity: number;
 }
 
 const Message = (props: Props) => {
@@ -82,9 +86,6 @@ const Message = (props: Props) => {
   );
 };
 
-interface OpacityProps {
-  opacity: number;
-}
 const MessageWrapper = styled.div<OpacityProps>`
   box-sizing: border-box;
   display: flex;

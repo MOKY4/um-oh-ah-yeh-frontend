@@ -1,5 +1,5 @@
 import React from "react";
-import * as CM from "@styles/copymodal";
+import * as CM from "@styles/CopyModalStyle";
 import copyImage from "@assets/images/copyimage.png";
 import { useRecoilState } from "recoil";
 import { copyModalState, copyModalisFirst } from "atoms/modalstates";

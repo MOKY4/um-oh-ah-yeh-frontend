@@ -1,5 +1,5 @@
 import React from "react";
-import * as AM from "@styles/alertmodal";
+import * as AM from "@styles/AlertModalStyle";
 import AlertImg from "@assets/images/alertimage.png";
 import { useRecoilState } from "recoil";
 import { alertModal } from "atoms/modalstates";

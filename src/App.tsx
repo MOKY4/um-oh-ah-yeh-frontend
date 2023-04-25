@@ -1,8 +1,8 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Main from "@pages/main";
-import Chat from "@pages/chat";
-import NotFound from "@pages/notfound";
+import Main from "@pages/MainPage";
+import Chat from "@pages/ChatPage";
+import NotFound from "@pages/NotFoundPage";
 import { RecoilRoot } from "recoil";
 
 function App() {

@@ -16,7 +16,6 @@ export const ModalBackground = styled.div`
 export const ModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  // justify-content: center;
   align-items: center;
   width: 600rem;
   height: 350rem;
@@ -40,12 +39,7 @@ export const ModalCopyText = styled.span`
   font-weight: 400;
   font-size: 16rem;
   line-height: 23rem;
-  /* or 144% */
-
   text-align: center;
-
-  /* GRAY 03 */
-
   color: #424242;
   margin-bottom: 20rem;
 `;
@@ -55,26 +49,16 @@ export const ModalCloseButton = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-
   width: 155rem;
   height: 45rem;
-
-  /* SUB COLOR 02 */
-
   background: #3a79e3;
   border-radius: 10rem;
-
   font-family: "AppleSDGothicNeoB00";
   font-style: normal;
   font-weight: 400;
   font-size: 16rem;
   line-height: 23rem;
-  /* identical to box height, or 144% */
-
   text-align: center;
-
-  /* GRAY 00 */
-
   color: #ffffff;
   cursor: pointer;
 `;
