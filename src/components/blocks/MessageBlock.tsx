@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ChoiceButton from "./ChoiceButtonBlock";
 import questions from "@assets/data/questions.json";
 import SystemThumb from "@assets/images/SystemThumb.png";
-import WidthBox from "./WidthBlock";
+import WidthBox from "./widthblock";
 import { useRecoilState } from "recoil";
 import { depthState, roleState, toState } from "atoms/messagestates";
 

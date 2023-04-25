@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import MainLogo from "@assets/images/MainLogo.png";
-import HeightBox from "@blocks/HeightBlock";
-import WidthBox from "@blocks/WidthBlock";
+import HeightBox from "@blocks/heightblock";
+import WidthBox from "@blocks/widthblock";
 import ummImage from "@assets/images/ummImage.png";
 import SecondDescIMG1 from "@assets/images/SecondDesc1.png";
 import SecondDescIMG2 from "@assets/images/SecondDesc2.png";

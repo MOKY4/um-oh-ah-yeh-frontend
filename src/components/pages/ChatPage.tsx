@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import HeightBox from "@blocks/HeightBlock";
-import WidthBox from "@blocks/WidthBlock";
+import HeightBox from "@blocks/heightblock";
+import WidthBox from "@blocks/widthblock";
 import Message from "@blocks/MessageBlock";
 import ResponseMessage from "@blocks/ResponseBlock";
 import UserRequest from "@blocks/UserRequestBlock";

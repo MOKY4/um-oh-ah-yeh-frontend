@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import gpterror from "@assets/images/gpterror.png";
-import HeightBox from "./HeightBlock";
+import HeightBox from "./heightblock";
 
 const GPTError = () => {
   return (
