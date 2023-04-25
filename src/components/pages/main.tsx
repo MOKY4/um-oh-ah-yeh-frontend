@@ -3,30 +3,29 @@ import styled from "styled-components";
 import MainLogo from "@assets/images/MainLogo.png";
 import HeightBox from "@blocks/heightblock";
 import WidthBox from "@blocks/widthblock";
-import { PageHeader, PageHeaderBack, Logo } from "@styles/headers";
-import HeaderLogo from "@assets/images/logo.png";
 import ummImage from "@assets/images/ummImage.png";
 import SecondDescIMG1 from "@assets/images/SecondDesc1.png";
 import SecondDescIMG2 from "@assets/images/SecondDesc2.png";
 import FooterLogo from "@assets/images/footerlogo.png";
 import githubimg from "@assets/images/githublogo.png";
 import mobilemain from "@assets/images/mobilemain.png";
+import Header from "@blocks/header";
 
 const Main = () => {
   const navigate = useNavigate();
   const ButtonHandler = () => {
     navigate("/chat");
   };
-  const LogoButtonHandler = () => {
-    navigate("/");
-  };
+
   const GithubHandler = (link: string) => {
     window.location.href = link;
   };
+
   const isMobile = function () {
     const match = window.matchMedia("(pointer:coarse)");
     return match && match.matches;
   };
+
   if (isMobile()) {
     return (
       <MobileWrapper>
@@ -41,10 +40,7 @@ const Main = () => {
 
   return (
     <MainWrapper>
-      <PageHeader>
-        <Logo src={HeaderLogo} alt="" onClick={LogoButtonHandler}></Logo>
-      </PageHeader>
-      <PageHeaderBack></PageHeaderBack>
+      <Header />
       <CenterWrapper>
         <HeightBox height="166rem" />
         <CenterContents>

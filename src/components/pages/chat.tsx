@@ -1,30 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+
 import HeightBox from "@blocks/heightblock";
 import WidthBox from "@blocks/widthblock";
 import Message from "@blocks/message";
-import { PageHeader, PageHeaderBack, Logo } from "@styles/headers";
-import HeaderLogo from "@assets/images/logo.png";
-import { useNavigate } from "react-router-dom";
 import UserChoiceButton from "@blocks/userchoicebutton";
-import SendLogo from "@assets/images/SendImg.png";
-import ReloadImage from "@assets/images/reload.png";
 import ResponseMessage from "@blocks/response";
 import UserRequest from "@blocks/userrequest";
-import PostResponse from "@assets/images/postresponse.png";
+import AlertModal from "@blocks/alertmodal";
+import CopyModal from "@blocks/copymodal";
+import GPTLoading from "@blocks/gptloding";
+import GPTError from "@blocks/gpterror";
+import ChatHeader from "@blocks/chatheader";
+
 import { useRecoilState } from "recoil";
 import {
   alertModal,
   copyModalState,
   copyModalisFirst,
 } from "atoms/modalstates";
-import gptloading from "@assets/images/gptloading.gif";
-import gptloadingalt from "@assets/images/gptloadingalt.png";
-import gpterror from "@assets/images/gpterror.png";
-import responseloadinggif from "@assets/images/responsegif.gif";
 import { choiceListState, depthState } from "atoms/messagestates";
-import AlertModal from "@blocks/alertmodal";
-import CopyModal from "@blocks/copymodal";
+
+import PostResponse from "@assets/images/postresponse.png";
+import ReloadImage from "@assets/images/reload.png";
+import SendLogo from "@assets/images/SendImg.png";
+import responseloadinggif from "@assets/images/responsegif.gif";
 
 const Chat = () => {
   const [curDepth] = useRecoilState(depthState);
@@ -32,11 +32,11 @@ const Chat = () => {
   const [isAlertModalOn] = useRecoilState(alertModal);
   const [isCopyModalOn] = useRecoilState(copyModalState);
   const [isCopyFirst] = useRecoilState(copyModalisFirst);
-  const [socketConnected, setSocketConnected] = useState(false);
   const [responses, setResponse] = useState<string[]>([]);
   const [curInput, setInput] = useState("");
   const [sendMsg, setSendMsg] = useState(false);
   const [countError, setError] = useState(false);
+  const [socketConnected, setSocketConnected] = useState(false);
 
   const webSocketUrl = process.env.REACT_APP_API_ENDPOINT!;
   let ws = useRef<WebSocket | null>(null);
@@ -112,10 +112,6 @@ const Chat = () => {
       });
     }
   }, [curDepth, choiceList, responses]);
-  const navigate = useNavigate();
-  const LogoButtonHandler = () => {
-    navigate("/");
-  };
 
   const ReloadHandler = () => {
     ws.current?.close();
@@ -152,46 +148,26 @@ const Chat = () => {
   if (countError) {
     return (
       <>
-        <PageHeader>
-          <Logo src={HeaderLogo} alt="" onClick={LogoButtonHandler}></Logo>
-        </PageHeader>
-        <PageHeaderBack></PageHeaderBack>
-        <HeaderLine />
+        <ChatHeader />
         <HeightBox height="342rem" />
-        <GPTErrorWrapper>
-          <GPTError src={gpterror} alt="" />
-          <HeightBox height="21rem" />
-          <GPTErrorText>
-            접속자 수가 많으니 잠시 후 다시 시도해주세요
-          </GPTErrorText>
-        </GPTErrorWrapper>
+        <GPTError />
       </>
     );
   }
+
   if (responses.length === 0) {
     return (
       <>
-        <PageHeader>
-          <Logo src={HeaderLogo} alt="" onClick={LogoButtonHandler}></Logo>
-        </PageHeader>
-        <PageHeaderBack></PageHeaderBack>
-        <HeaderLine />
+        <ChatHeader />
         <HeightBox height="220rem" />
-        <GPTLoadingWrapper>
-          <GPTLoading src={gptloading} alt={gptloadingalt} />
-          <GPTLoadingText>로딩 중이에요... 잠시만 기다려주세요!</GPTLoadingText>
-        </GPTLoadingWrapper>
+        <GPTLoading />
       </>
     );
   }
 
   return (
     <>
-      <PageHeader>
-        <Logo src={HeaderLogo} alt="" onClick={LogoButtonHandler}></Logo>
-      </PageHeader>
-      <PageHeaderBack></PageHeaderBack>
-      <HeaderLine />
+      <ChatHeader />
       <MainWrapper>
         <ChatWrapper>
           <ResponseWrapper id="questions">
@@ -280,11 +256,6 @@ const Chat = () => {
 };
 
 export default Chat;
-
-const HeaderLine = styled.div`
-  height: 0.5rem;
-  background: #838383;
-`;
 
 const MainWrapper = styled.div`
   display: flex;
@@ -450,48 +421,4 @@ const PostResponseImg = styled.img`
   margin: 0 auto;
   margin-top: 50rem;
   margin-bottom: 44rem;
-`;
-
-const GPTLoadingWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-`;
-
-const GPTLoading = styled.img`
-  width: 400rem;
-  height: 377.36rem;
-  margin: 0 auto;
-`;
-
-const GPTLoadingText = styled.span`
-  font-family: "AppleSDGothicNeoM00";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 17rem;
-  line-height: 22rem;
-  color: #838383;
-  margin: 0 auto;
-`;
-
-const GPTErrorWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-`;
-
-const GPTError = styled.img`
-  width: 345rem;
-  height: 153rem;
-  margin: 0 auto;
-`;
-
-const GPTErrorText = styled.span`
-  font-family: "AppleSDGothicNeoM00";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 17rem;
-  line-height: 22rem;
-  color: #838383;
-  margin: 0 auto;
 `;
