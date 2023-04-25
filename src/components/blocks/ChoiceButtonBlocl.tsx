@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { alertModal } from "atoms/modalstates";
+import { alertModal } from "atoms/ModalStates";
 import { useRecoilState } from "recoil";
 import {
   choiceListState,
   depthState,
   roleState,
   toState,
-} from "atoms/messagestates";
+} from "atoms/MessageStates";
 
 interface Props {
   selected: number;

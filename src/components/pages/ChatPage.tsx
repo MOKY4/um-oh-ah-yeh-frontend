@@ -21,8 +21,8 @@ import {
   alertModal,
   copyModalState,
   copyModalisFirst,
-} from "atoms/modalstates";
-import { choiceListState, depthState } from "atoms/messagestates";
+} from "atoms/ModalStates";
+import { choiceListState, depthState } from "atoms/MessageStates";
 
 const Chat = () => {
   const [curDepth] = useRecoilState(depthState);

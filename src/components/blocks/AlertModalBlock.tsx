@@ -2,7 +2,7 @@ import React from "react";
 import * as AM from "@styles/AlertModalStyle";
 import AlertImg from "@assets/images/alertimage.png";
 import { useRecoilState } from "recoil";
-import { alertModal } from "atoms/modalstates";
+import { alertModal } from "atoms/ModalStates";
 
 const AlertModal = () => {
   const [, setAlertModal] = useRecoilState(alertModal);

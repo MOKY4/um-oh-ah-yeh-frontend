@@ -5,7 +5,7 @@ import questions from "@assets/data/questions.json";
 import SystemThumb from "@assets/images/SystemThumb.png";
 import WidthBox from "./WidthBlock";
 import { useRecoilState } from "recoil";
-import { depthState, roleState, toState } from "atoms/messagestates";
+import { depthState, roleState, toState } from "atoms/MessageStates";
 
 interface DataType {
   [key: number]: {

@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { choiceListState } from "atoms/messagestates";
+import { choiceListState } from "atoms/MessageStates";
 import styled from "styled-components";
 import UserChoiceButton from "./UserChoiceButtonBlock";
 
