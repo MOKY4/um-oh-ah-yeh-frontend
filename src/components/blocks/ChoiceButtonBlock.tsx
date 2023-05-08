@@ -1,7 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
 import { alertModal } from "atoms/modalstates";
+import { useRecoilState } from "recoil";
+import {
+  choiceListState,
+  depthState,
+  roleState,
+  toState,
+} from "atoms/messagestates";
 
 interface Props {
   selected: number;
@@ -9,26 +15,26 @@ interface Props {
   text: string;
   choice_id: number;
   depth: number;
-  curDepth: number;
-  setTo: React.Dispatch<React.SetStateAction<number>>;
-  setRole: React.Dispatch<React.SetStateAction<number>>;
-  nextDepth: React.Dispatch<React.SetStateAction<number>>;
-  updateList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const ChoiceButton = (props: Props) => {
   const [, setAlertModal] = useRecoilState(alertModal);
+  const [curDepth, nextDepth] = useRecoilState(depthState);
+  const [, updateList] = useRecoilState(choiceListState);
+  const [, setRole] = useRecoilState(roleState);
+  const [, setTo] = useRecoilState(toState);
+
   const onClickHandler = () => {
-    if (props.depth === props.curDepth) {
+    if (props.depth === curDepth) {
       if (props.depth === 1) {
-        props.setRole(props.choice_id);
+        setRole(props.choice_id);
       }
       if (props.depth === 2) {
-        props.setTo(props.choice_id);
+        setTo(props.choice_id);
       }
       props.setChoice(props.choice_id);
-      props.nextDepth(props.depth + 1);
-      props.updateList((oldArray) => [...oldArray, props.text]);
+      nextDepth(props.depth + 1);
+      updateList((oldArray) => [...oldArray, props.text]);
     } else {
       setAlertModal(true);
     }
@@ -46,31 +52,20 @@ const NotChoiced = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 5rem 20rem;
-
-  // width: 100rem;
   height: 32rem;
-
   background: #f0f0f0;
   border: 1.3rem solid #f0f0f0;
   border-radius: 10rem;
-
-  /* Inside auto layout */
-
   flex: none;
   order: 0;
   flex-grow: 0;
-
   font-family: "AppleSDGothicNeoB00";
   font-style: normal;
   font-weight: 400;
   font-size: 16rem;
   line-height: 22rem;
   text-align: center;
-
-  /* 1 */
-
   color: #424242;
   margin-right: 20rem;
 `;
@@ -79,31 +74,19 @@ const Choiced = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 5rem 20rem;
-
-  // width: 100rem;
-  // height: 32rem;
-
   background: #cce1ff;
   border: 1.3rem solid #3a79e3;
   border-radius: 10rem;
-
-  /* Inside auto layout */
-
   flex: none;
   order: 0;
   flex-grow: 0;
-
   font-family: "AppleSDGothicNeoB00";
   font-style: normal;
   font-weight: 400;
   font-size: 16rem;
   line-height: 22rem;
   text-align: center;
-
-  /* 1 */
-
   color: #424242;
   margin-right: 20rem;
 `;

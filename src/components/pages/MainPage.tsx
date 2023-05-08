@@ -3,30 +3,29 @@ import styled from "styled-components";
 import MainLogo from "@assets/images/MainLogo.png";
 import HeightBox from "@blocks/heightblock";
 import WidthBox from "@blocks/widthblock";
-import { PageHeader, PageHeaderBack, Logo } from "@blocks/headers";
-import HeaderLogo from "@assets/images/logo.png";
 import ummImage from "@assets/images/ummImage.png";
 import SecondDescIMG1 from "@assets/images/SecondDesc1.png";
 import SecondDescIMG2 from "@assets/images/SecondDesc2.png";
 import FooterLogo from "@assets/images/footerlogo.png";
 import githubimg from "@assets/images/githublogo.png";
 import mobilemain from "@assets/images/mobilemain.png";
+import Header from "@blocks/HeaderBlock";
 
 const Main = () => {
   const navigate = useNavigate();
   const ButtonHandler = () => {
     navigate("/chat");
   };
-  const LogoButtonHandler = () => {
-    navigate("/");
-  };
+
   const GithubHandler = (link: string) => {
     window.location.href = link;
   };
+
   const isMobile = function () {
     const match = window.matchMedia("(pointer:coarse)");
     return match && match.matches;
   };
+
   if (isMobile()) {
     return (
       <MobileWrapper>
@@ -41,10 +40,7 @@ const Main = () => {
 
   return (
     <MainWrapper>
-      <PageHeader>
-        <Logo src={HeaderLogo} alt="" onClick={LogoButtonHandler}></Logo>
-      </PageHeader>
-      <PageHeaderBack></PageHeaderBack>
+      <Header />
       <CenterWrapper>
         <HeightBox height="166rem" />
         <CenterContents>
@@ -206,7 +202,6 @@ const CenterFirstText = styled.span`
   font-weight: 400;
   font-size: 40rem;
   line-height: 56rem;
-
   color: #292929;
   white-space: pre-line;
   width: 433rem;
@@ -219,8 +214,6 @@ const CenterSecondText = styled.span`
   font-weight: 400;
   font-size: 20rem;
   line-height: 150%;
-  /* or 30rem */
-
   letter-spacing: -0.022em;
   color: #424242;
 `;
@@ -244,10 +237,8 @@ const Button = styled.button`
   align-items: center;
   padding: 20rem 10rem;
   gap: 10rem;
-
   width: 540rem;
   height: 75rem;
-
   border: solid 1rem #3a79e3;
   background: #3a79e3;
   border-radius: 20rem;
@@ -260,10 +251,7 @@ const ButtonText = styled.span`
   font-weight: 400;
   font-size: 25rem;
   line-height: 35rem;
-  /* identical to box height, or 140% */
-
   text-align: center;
-
   color: #ffffff;
 `;
 
@@ -300,7 +288,6 @@ const DescRightColumn = styled.div`
   height: 140rem;
   display: flex;
   flex-direction: column;
-  // justify-content: space-between;
   align-items: center;
 `;
 
@@ -311,11 +298,11 @@ const DescRightFirstText = styled.span`
   font-size: 20rem;
   line-height: 30rem;
   text-align: center;
-
   color: #424242;
   width: 140rem;
   margin-bottom: 30rem;
 `;
+
 const DescRightSecondText = styled.span`
   font-family: "AppleSDGothicNeoB00";
   font-style: normal;
@@ -323,7 +310,6 @@ const DescRightSecondText = styled.span`
   font-size: 17rem;
   line-height: 25rem;
   text-align: center;
-
   color: #8c8c8c;
   width: 153rem;
 `;
@@ -347,18 +333,12 @@ const SecondDescWrapper = styled.div`
 const SecondDescTopText = styled.span`
   width: 534rem;
   height: 168rem;
-
-  /* TITLE 01 */
-
   font-family: "AppleSDGothicNeoB00";
   font-style: normal;
   font-weight: 400;
   font-size: 40rem;
   line-height: 56rem;
-  /* or 140% */
-
   text-align: center;
-
   color: #424242;
   margin-top: 140rem;
 `;
@@ -366,6 +346,7 @@ const SecondDescTopText = styled.span`
 const TopBlueText = styled.span`
   color: #3a79e3;
 `;
+
 const TopOrangeText = styled.span`
   color: #ff983b;
 `;
@@ -377,6 +358,7 @@ const FirstIMG = styled.img`
   top: 1683rem;
   left: 249rem;
 `;
+
 const SecondIMG = styled.img`
   position: absolute;
   width: 420rem;
@@ -388,7 +370,6 @@ const SecondIMG = styled.img`
 const AdBlock = styled.div`
   width: 1055rem;
   height: 89rem;
-  // background: black;
   margin: 0 auto;
 `;
 
@@ -411,6 +392,7 @@ const FooterTextWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
 const ContactText = styled.span`
   font-family: "AppleSDGothicNeoM00";
   font-style: normal;
@@ -418,10 +400,6 @@ const ContactText = styled.span`
   font-size: 17rem;
   line-height: 32rem;
   text-align: left;
-  /* or 188% */
-
-  /* GRAY 03 */
-
   color: #424242;
 `;
 
@@ -433,10 +411,6 @@ const CopyrightBox = styled.div`
   font-weight: 400;
   font-size: 16rem;
   line-height: 32rem;
-  /* identical to box height, or 200% */
-
-  /* GRAY 03 */
-
   color: #424242;
   margin: 0 auto;
 `;
@@ -462,12 +436,9 @@ const MobileModalWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   width: 330px;
   height: 330px;
   margin: 0 auto;
-  /* GRAY 00 */
-  // margin-top: 20vh;
   background: #ffffff;
   box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
   border-radius: 15px;
@@ -486,11 +457,6 @@ const MobileText = styled.span`
   font-weight: 400;
   font-size: 16px;
   line-height: 23px;
-  /* identical to box height, or 144% */
-
   text-align: center;
-
-  /* GRAY 03 */
-
   color: #424242;
 `;
