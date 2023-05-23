@@ -23,6 +23,7 @@ import {
   copyModalisFirst,
 } from "atoms/modalstates";
 import { choiceListState, depthState } from "atoms/messagestates";
+import GoogleAd from "@blocks/GoogleAd";
 
 const Chat = () => {
   const [curDepth] = useRecoilState(depthState);
@@ -215,6 +216,11 @@ const Chat = () => {
               </InputSendWrapper>
             </InputWrapper>
           </InputReloadWrapper>
+          <AdContainer>
+            <GoogleAd />
+            <SizedBox />
+            <GoogleAd />
+          </AdContainer>
         </ChatWrapper>
       </MainWrapper>
       {isAlertModalOn && <AlertModal />}
@@ -290,4 +296,18 @@ const InputReloadWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+`;
+
+const AdContainer = styled.div`
+  // background: black;
+  // width: 300px;
+  display: flex;
+  justify-content: flex-end;
+  height: 50px;
+  margin-bottom: 55px;
+  margin-top: -10px;
+`;
+
+const SizedBox = styled.div`
+  width: 15px;
 `;
