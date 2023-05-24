@@ -2,7 +2,7 @@
 
 챗봇을 활용해 글쓰기에 어려움을 느끼는 청년들을 편의를 돕기 위한 레터 작성 웹서비스
 
-### 📌 Production on [Link](https://um-oh-ah-yeh.vercel.app/)
+### 📌 Production on [Link](https://umm.swygbro.com/)
 ### 메인 화면
 ![ezgif-4-1e2b5645fa](https://user-images.githubusercontent.com/86578246/233944143-fa272dd2-138d-46c1-881d-725d1aa432f1.gif)
 
