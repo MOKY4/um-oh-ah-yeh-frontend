@@ -1,4 +1,4 @@
-# ✏️ Um-oh-ah-yeh-frontend
+# ✏️ Umm-frontend
 
 챗봇을 활용해 글쓰기에 어려움을 느끼는 청년들을 편의를 돕기 위한 레터 작성 웹서비스
 
